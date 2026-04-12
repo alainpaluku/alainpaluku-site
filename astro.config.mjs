@@ -8,10 +8,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://alainpaluku.com',
-  output: 'server',
-  adapter: cloudflare({
-    imageService: 'passthrough',
-  }),
+  output: 'hybrid',
+  adapter: cloudflare(),
   server: {
     port: 3000,
     host: true,
