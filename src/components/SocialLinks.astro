@@ -1,0 +1,39 @@
+---
+import Icon from "./Icon.astro";
+import { SOCIAL_LINKS } from "../lib/constants";
+
+interface Props {
+    variant?: "default" | "compact";
+    class?: string;
+}
+
+const { variant = "default", class: className = "" } = Astro.props;
+---
+
+<div class={`flex gap-4 ${className}`}>
+    {
+        SOCIAL_LINKS.map((link) =>
+            variant === "compact" ? (
+                <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-lg bg-muted/50 border border-border flex items-center justify-center text-muted-foreground hover:text-accent hover:border-accent/50 transition-all"
+                    aria-label={link.name}
+                >
+                    <Icon name={link.icon} size="sm" />
+                </a>
+            ) : (
+                <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-muted-foreground hover:text-accent transition-colors"
+                    aria-label={link.name}
+                >
+                    <Icon name={link.icon} size="lg" />
+                </a>
+            ),
+        )
+    }
+</div>

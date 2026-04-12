@@ -1,0 +1,169 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  author?: string;
+  keywords?: string[];
+}
+
+const {
+  title,
+  description = "Ingénieur Électricien spécialisé en réseaux électriques, énergies renouvelables et automatisme industriel. Expertise en dimensionnement de centrales hydrauliques et photovoltaïques, installations électriques industrielles et systèmes de monitoring.",
+  image = "https://assets.alainpaluku.com/profil/alainpaluku.png",
+  type = "website",
+  publishedTime,
+  author = "Alain Paluku",
+  keywords = [
+    "ingénieur électricien",
+    "réseaux électriques",
+    "énergies renouvelables",
+    "automatisme industriel",
+    "SCADA",
+    "maintenance prédictive",
+    "centrales hydrauliques",
+    "photovoltaïque",
+  ],
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteTitle = "Alain Paluku - Ingénieur Électricien";
+const fullTitle = `${title} | ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="title" content={fullTitle} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(", ")} />
+    <meta name="author" content={author} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={siteTitle} />
+    {
+      publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
+    {author && <meta property="article:author" content={author} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- Structured Data for GEO -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Alain Paluku",
+        jobTitle: "Ingénieur Électricien",
+        description: description,
+        url: canonicalURL.toString(),
+        image: image,
+        sameAs: [
+          "https://linkedin.com/in/alainpaluku",
+          "https://github.com/alainpaluku",
+          "https://medium.com/@alainpaluku",
+          "https://huggingface.co/alainpaluku",
+        ],
+        knowsAbout: [
+          "Réseaux électriques BT, MT, HT",
+          "Énergies renouvelables",
+          "Centrales hydrauliques",
+          "Systèmes photovoltaïques",
+          "Automatisme industriel",
+          "Systèmes SCADA",
+          "Maintenance prédictive",
+          "IoT industriel",
+          "Installations électriques industrielles",
+        ],
+        alumniOf: {
+          "@type": "EducationalOrganization",
+          name: "Université Catholique la Sapientia",
+        },
+      })}
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://assets.alainpaluku.com/profil/avatar.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://assets.alainpaluku.com/profil/avatar.png"
+    />
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://assets.alainpaluku.com" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- KaTeX for math rendering -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+      integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+      crossorigin="anonymous"
+    />
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Theme Script -->
+    <script is:inline>
+      (function () {
+        const saved = localStorage.getItem("theme");
+        if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col font-sans">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <ScrollToTop />
+  </body>
+</html>

@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+
+// Formater la date
+const formattedDate = post.data.date.toLocaleDateString("fr-FR", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<article
+  class="h-full flex flex-col rounded-xl overflow-hidden bg-muted/20 border border-border hover:border-accent"
+>
+  <a href={`/articles/${post.slug}`} class="flex-1 flex flex-col">
+    <!-- Image -->
+    <div class="aspect-video overflow-hidden bg-muted flex-shrink-0">
+      {
+        post.data.image ? (
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            loading="lazy"
+            class="w-full h-full object-cover"
+          />
+        ) : (
+          <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/10 to-accent/5">
+            <Icon name="arrow-right" size="xl" class="text-accent/30" />
+          </div>
+        )
+      }
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 flex flex-col p-5">
+      <!-- Date en haut -->
+      <time class="text-xs text-muted-foreground font-mono mb-3 block">
+        {formattedDate}
+      </time>
+
+      <!-- Title -->
+      <h3
+        class="text-lg font-semibold text-foreground mb-2 line-clamp-2 min-h-[3.5rem]"
+      >
+        {post.data.title}
+      </h3>
+
+      <!-- Description -->
+      <p class="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
+        {post.data.description}
+      </p>
+
+      <!-- Footer: Catégorie et Bouton -->
+      <div
+        class="flex items-center justify-between gap-3 mt-auto pt-4 border-t border-border"
+      >
+        <!-- Catégorie -->
+        <span
+          class="px-3 py-1 text-xs font-mono text-muted-foreground bg-muted rounded-md border border-border capitalize"
+        >
+          {post.data.category}
+        </span>
+
+        <!-- CTA Button -->
+        <div
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-accent-foreground text-sm font-medium rounded-lg whitespace-nowrap flex-shrink-0"
+        >
+          <span>Lire l'article</span>
+          <Icon name="arrow-right" size="sm" />
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

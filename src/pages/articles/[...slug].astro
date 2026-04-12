@@ -1,0 +1,180 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, getEntry } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
+import ResourceList from "../../components/ResourceList.astro";
+import Button from "../../components/Button.astro";
+import type { Resource } from "../../lib/types";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntry("blog", slug);
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await post.render();
+
+// Get similar articles (same category, excluding current)
+const allPosts = await getCollection("blog");
+const similarPosts = allPosts
+  .filter((p) => !p.data.draft && p.slug !== post.slug)
+  .filter((p) => p.data.category === post.data.category)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 1);
+---
+
+<BaseLayout
+  title={post.data.title.toUpperCase()}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.date.toISOString()}
+  author={post.data.author}
+  image={post.data.image}
+  keywords={[
+    post.data.category,
+    "ingénierie électrique",
+    "réseaux électriques",
+    "automatisme industriel",
+    "énergies renouvelables",
+    ...post.data.title
+      .toLowerCase()
+      .split(" ")
+      .filter((word) => word.length > 4),
+  ]}
+>
+  <article class="py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto">
+        <!-- Back link -->
+        <Button
+          href="/articles"
+          variant="primary"
+          icon="arrow-left"
+          iconPosition="left"
+          class="mb-8 text-sm"
+        >
+          Retour aux articles
+        </Button>
+
+        <!-- Header -->
+        <header class="mb-12">
+          <h1
+            class="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-6 uppercase"
+          >
+            {post.data.title}
+          </h1>
+
+          <!-- Author -->
+          <div class="flex items-center gap-3 mb-6">
+            <img
+              src={post.data.authorImage}
+              alt={post.data.author}
+              class="w-12 h-12 rounded-full object-cover border-2 border-border"
+            />
+            <div>
+              <p class="text-sm font-medium text-foreground uppercase">
+                {post.data.author}
+              </p>
+              <p class="text-xs text-muted-foreground">Auteur</p>
+            </div>
+            <div class="h-8 w-px bg-border mx-1"></div>
+            <time class="text-sm text-muted-foreground font-mono">
+              {
+                post.data.date.toLocaleDateString("fr-FR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }
+            </time>
+          </div>
+
+          <p class="text-lg text-muted-foreground mb-6">
+            {post.data.description}
+          </p>
+
+          <!-- Featured Image -->
+          {
+            post.data.image && (
+              <img
+                src={post.data.image}
+                alt={`Illustration de l'article: ${post.data.title}`}
+                width="768"
+                height="432"
+                loading="eager"
+                fetchpriority="high"
+                class="w-full aspect-video object-cover rounded-xl border border-border mb-8"
+              />
+            )
+          }
+        </header>
+
+        <!-- Content -->
+        <div class="prose">
+          <Content />
+        </div>
+
+        {
+          post.data.resources && post.data.resources.length > 0 && (
+            <ResourceList resources={post.data.resources as Resource[]} />
+          )
+        }
+      </div>
+    </div>
+
+    <!-- Similar Articles -->
+    {
+      similarPosts.length > 0 && (
+        <div class="mt-16 pt-16 border-t border-border">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+              <h2 class="text-2xl font-bold text-foreground mb-8">
+                Article similaire
+              </h2>
+              <div class="grid md:grid-cols-1 gap-6 max-w-2xl">
+                {similarPosts.slice(0, 1).map((similarPost) => (
+                  <ArticleCard post={similarPost} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Footer Navigation -->
+    <div class="mt-16 border-t border-border">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto pt-8">
+          <Button
+            href="/articles"
+            variant="primary"
+            icon="arrow-left"
+            iconPosition="left"
+            class="text-sm"
+          >
+            Tous les articles
+          </Button>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  import { enhanceCodeBlocks } from "../../scripts/code-blocks";
+  import { makeTablesResponsive } from "../../scripts/table-responsive";
+
+  enhanceCodeBlocks();
+  makeTablesResponsive();
+</script>

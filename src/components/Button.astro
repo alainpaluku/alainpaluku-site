@@ -1,0 +1,41 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+    href?: string;
+    variant?: "primary" | "secondary";
+    icon?: string;
+    iconPosition?: "left" | "right";
+    class?: string;
+    type?: "button" | "submit";
+}
+
+const {
+    href,
+    variant = "primary",
+    icon,
+    iconPosition = "right",
+    class: className = "",
+    type = "button",
+} = Astro.props;
+
+const baseClasses =
+    "inline-flex items-center justify-center gap-2 px-6 py-3 font-medium rounded-lg transition-all";
+const variantClasses = {
+    primary: "bg-accent text-accent-foreground hover:opacity-90",
+    secondary:
+        "border border-border bg-muted/20 text-foreground hover:bg-muted/30",
+};
+
+const Element = href ? "a" : "button";
+---
+
+<Element
+    href={href}
+    type={!href ? type : undefined}
+    class={`${baseClasses} ${variantClasses[variant]} ${className}`}
+>
+    {icon && iconPosition === "left" && <Icon name={icon} size="sm" />}
+    <slot />
+    {icon && iconPosition === "right" && <Icon name={icon} size="sm" />}
+</Element>

@@ -1,0 +1,49 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+    id: string;
+    class?: string;
+}
+
+const { id, class: className = "" } = Astro.props;
+---
+
+<button
+    id={id}
+    class={`p-2 text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted ${className}`}
+    aria-label="Changer le thème"
+>
+    <Icon name="sun" size="md" class="hidden dark:block" />
+    <Icon name="moon" size="md" class="block dark:hidden" />
+</button>
+
+<script>
+    import { initializeWithAstro } from "../lib/client-utils";
+
+    initializeWithAstro(() => {
+        const themeToggles = document.querySelectorAll('[id^="theme-toggle"]');
+        const html = document.documentElement;
+
+        // Charger le thème sauvegardé ou utiliser dark par défaut
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+            html.classList.remove("dark");
+        } else {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        }
+
+        // Fonction de toggle
+        function toggleTheme() {
+            html.classList.toggle("dark");
+            const isDark = html.classList.contains("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+
+        // Ajouter les listeners
+        themeToggles.forEach((toggle) => {
+            toggle.addEventListener("click", toggleTheme);
+        });
+    });
+</script>

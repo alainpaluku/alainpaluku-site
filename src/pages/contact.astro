@@ -1,0 +1,393 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+
+const contactMethods = [
+  {
+    name: "Email",
+    value: "contact@alainpaluku.com",
+    href: "mailto:contact@alainpaluku.com",
+    icon: "email",
+  },
+  {
+    name: "WhatsApp",
+    value: "+243 897 023 743",
+    href: "https://wa.me/243897023743",
+    icon: "whatsapp",
+  },
+  {
+    name: "Discord",
+    value: "@alainpaluku",
+    href: "https://discord.com/users/YOURID",
+    icon: "discord",
+  },
+];
+
+const socialLinks = [
+  {
+    name: "LinkedIn",
+    href: "https://linkedin.com/in/alainpaluku",
+    icon: "linkedin",
+  },
+  { name: "GitHub", href: "https://github.com/alainpaluku", icon: "github" },
+  { name: "Medium", href: "https://medium.com/@alainpaluku", icon: "medium" },
+  {
+    name: "Hugging Face",
+    href: "https://huggingface.co/alainpaluku",
+    icon: "huggingface",
+  },
+];
+---
+
+<BaseLayout
+  title="ME CONTACTER"
+  description="Contactez Alain Paluku pour vos projets en réseaux électriques, énergies renouvelables et automatisme industriel. Expertise en dimensionnement de centrales hydrauliques, photovoltaïques et installations électriques industrielles."
+  keywords={[
+    "contact ingénieur électricien",
+    "consultation réseaux électriques",
+    "expert énergies renouvelables",
+    "automatisme industriel",
+    "dimensionnement centrale",
+    "installation électrique industrielle",
+  ]}
+>
+  <section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16">
+          <h1
+            class="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4"
+          >
+            ME CONTACTER
+          </h1>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Pour toute préoccupation, n'hésitez pas à me contacter.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <!-- Left: Contact Form -->
+        <div class="order-2 lg:order-1">
+          <div class="bg-muted/20 border border-border rounded-xl p-6 sm:p-8">
+            <h2 class="text-xl font-semibold text-foreground mb-6">
+              Envoyez un message
+            </h2>
+
+            <form id="contact-form" class="space-y-5">
+              <div>
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
+                  Nom complet
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  minlength="2"
+                  class="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+                  placeholder="Votre nom"
+                />
+                <p id="name-error" class="text-xs text-red-500 mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
+                  Adresse email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+                  placeholder="nom@mail.com"
+                />
+                <p id="email-error" class="text-xs text-red-500 mt-1 hidden">
+                </p>
+              </div>
+
+              <div>
+                <label
+                  for="subject"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
+                  Objectif
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  required
+                  minlength="3"
+                  class="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+                  placeholder="Collaboration sur un projet"
+                />
+                <p id="subject-error" class="text-xs text-red-500 mt-1 hidden">
+                </p>
+              </div>
+
+              <div>
+                <label
+                  for="message"
+                  class="block text-sm font-medium text-foreground mb-2"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="6"
+                  required
+                  minlength="10"
+                  class="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all resize-none"
+                  placeholder="Décrivez votre projet ou votre demande..."
+                ></textarea>
+                <p id="message-error" class="text-xs text-red-500 mt-1 hidden">
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full px-6 py-3.5 bg-accent text-accent-foreground font-medium rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span>Envoyer le message</span>
+                <Icon
+                  name="arrow"
+                  size="md"
+                  class="group-hover:translate-x-1 transition-transform"
+                />
+              </button>
+
+              <p id="form-status" class="text-sm hidden"></p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Contact Info -->
+        <div class="order-1 lg:order-2 space-y-8">
+          <!-- Contact Methods -->
+          <div>
+            <h2 class="text-xl font-semibold text-foreground mb-4">
+              Contact direct
+            </h2>
+            <div class="space-y-3">
+              {
+                contactMethods.map((method) => (
+                  <a
+                    href={method.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group flex items-center gap-4 p-4 rounded-lg bg-muted/20 border border-border hover:border-accent/50 hover:bg-muted/30 transition-all"
+                  >
+                    <div class="flex-shrink-0 w-11 h-11 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                      <Icon name={method.icon} size="md" class="text-accent" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="font-medium text-foreground text-sm">
+                        {method.name}
+                      </div>
+                      <div class="text-sm text-muted-foreground truncate">
+                        {method.value}
+                      </div>
+                    </div>
+                    <Icon
+                      name="chevron"
+                      size="sm"
+                      class="text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 transition-all"
+                    />
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div>
+            <h2 class="text-xl font-semibold text-foreground mb-4">
+              Réseaux sociaux
+            </h2>
+            <div class="grid grid-cols-2 gap-3">
+              {
+                socialLinks.map((link) => (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group flex items-center gap-3 p-3 rounded-lg bg-muted/20 border border-border hover:border-accent/50 hover:bg-muted/30 transition-all"
+                  >
+                    <div class="flex-shrink-0 w-9 h-9 rounded-md bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                      <Icon name={link.icon} size="sm" class="text-accent" />
+                    </div>
+                    <span class="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+                      {link.name}
+                    </span>
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+
+          <!-- Info Box -->
+          <div class="p-6 rounded-xl bg-accent/5 border border-accent/20">
+            <div class="flex items-start gap-3">
+              <div class="flex-shrink-0 mt-0.5">
+                <Icon name="info" size="md" class="text-accent" />
+              </div>
+              <div>
+                <h3 class="font-medium text-foreground mb-1">
+                  Temps de réponse
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Je réponds généralement sous 24-48h. Pour les urgences,
+                  privilégiez WhatsApp.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<!-- Floating WhatsApp Button -->
+<a
+  href="https://wa.me/243897023743"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-accent text-accent-foreground rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-300"
+  aria-label="Contacter via WhatsApp"
+>
+  <Icon name="whatsapp" size="xl" />
+</a>
+
+<script>
+  import { initializeWithAstro } from "../lib/client-utils";
+  import {
+    validateField,
+    validateEmailField,
+    showStatus,
+    hideError,
+  } from "../lib/form-validation-ui";
+
+  initializeWithAstro(() => {
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const status = document.getElementById("form-status");
+    const submitBtn = form?.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
+
+    // Éléments d'erreur
+    const nameInput = document.getElementById("name") as HTMLInputElement;
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const subjectInput = document.getElementById("subject") as HTMLInputElement;
+    const messageInput = document.getElementById(
+      "message",
+    ) as HTMLTextAreaElement;
+
+    const nameError = document.getElementById("name-error");
+    const emailError = document.getElementById("email-error");
+    const subjectError = document.getElementById("subject-error");
+    const messageError = document.getElementById("message-error");
+
+    // Validation en temps réel
+    nameInput?.addEventListener("blur", () =>
+      validateField(nameInput, nameError, 2, "Le nom"),
+    );
+    emailInput?.addEventListener("blur", () =>
+      validateEmailField(emailInput, emailError),
+    );
+    subjectInput?.addEventListener("blur", () =>
+      validateField(subjectInput, subjectError, 3, "Le sujet"),
+    );
+    messageInput?.addEventListener("blur", () =>
+      validateField(messageInput, messageError, 10, "Le message"),
+    );
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!submitBtn || !status) return;
+
+      // Validation complète avant envoi
+      const isNameValid = validateField(nameInput, nameError, 2, "Le nom");
+      const isEmailValid = validateEmailField(emailInput, emailError);
+      const isSubjectValid = validateField(
+        subjectInput,
+        subjectError,
+        3,
+        "Le sujet",
+      );
+      const isMessageValid = validateField(
+        messageInput,
+        messageError,
+        10,
+        "Le message",
+      );
+
+      if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
+        showStatus(
+          status,
+          "✗ Veuillez corriger les erreurs avant d'envoyer",
+          false,
+        );
+        return;
+      }
+
+      const originalContent = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Envoi en cours...</span>";
+
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
+      };
+
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          showStatus(status, "✓ Message envoyé avec succès !", true);
+          form.reset();
+          hideError(nameInput, nameError);
+          hideError(emailInput, emailError);
+          hideError(subjectInput, subjectError);
+          hideError(messageInput, messageError);
+
+          setTimeout(() => {
+            status.classList.add("hidden");
+          }, 5000);
+        } else {
+          const errorMessage = result.error || "Erreur lors de l'envoi";
+          showStatus(status, `✗ ${errorMessage}`, false);
+        }
+      } catch (error) {
+        showStatus(
+          status,
+          "✗ Erreur réseau. Vérifiez votre connexion et réessayez.",
+          false,
+        );
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalContent;
+      }
+    });
+  });
+</script>

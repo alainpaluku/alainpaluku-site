@@ -1,0 +1,87 @@
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
+import mdx from '@astrojs/mdx';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
+
+export default defineConfig({
+  site: 'https://alainpaluku.com',
+  output: 'server',
+  adapter: cloudflare({
+    imageService: 'passthrough',
+  }),
+  server: {
+    port: 3000,
+    host: true,
+  },
+  integrations: [
+    tailwind(),
+    mdx(),
+    sitemap({
+      filter: (page) => {
+        // Exclure les pages API et les pages de test
+        return !page.includes('/api/') && !page.includes('/test/');
+      },
+      customPages: [
+        'https://alainpaluku.com/',
+        'https://alainpaluku.com/articles/',
+        'https://alainpaluku.com/a-propos/',
+        'https://alainpaluku.com/contact/',
+      ],
+      serialize(item) {
+        // Priorités personnalisées par type de page
+        if (item.url.endsWith('/')) {
+          // Page d'accueil
+          item.priority = 1.0;
+          item.changefreq = 'daily';
+        } else if (item.url.includes('/articles/') && !item.url.endsWith('/articles/')) {
+          // Articles individuels
+          item.priority = 0.9;
+          item.changefreq = 'monthly';
+        } else if (item.url.includes('/articles/categorie/')) {
+          // Pages de catégories
+          item.priority = 0.8;
+          item.changefreq = 'weekly';
+        } else if (item.url.includes('/articles/')) {
+          // Page liste articles
+          item.priority = 0.85;
+          item.changefreq = 'weekly';
+        } else {
+          // Autres pages (à propos, contact)
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
+        }
+        return item;
+      },
+      i18n: {
+        defaultLocale: 'fr',
+        locales: {
+          fr: 'fr-FR',
+        },
+      },
+    }),
+  ],
+  markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
+    shikiConfig: {
+      themes: {
+        light: 'tokyo-night',
+        dark: 'tokyo-night',
+      },
+      wrap: true,
+    },
+  },
+  // Optimisations Cloudflare
+  vite: {
+    build: {
+      minify: false,
+    },
+  },
+  compressHTML: true,
+  build: {
+    inlineStylesheets: 'auto',
+  },
+});

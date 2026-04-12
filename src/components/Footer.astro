@@ -1,0 +1,240 @@
+---
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import {
+  SITE_CONFIG,
+  CONTACT_LINKS,
+  SOCIAL_LINKS,
+  NAV_LINKS,
+} from "../lib/constants";
+---
+
+<footer class="border-t border-border bg-muted/30">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Newsletter Section -->
+    <div class="mb-12 pb-8 border-b border-border">
+      <div class="max-w-2xl mx-auto text-center">
+        <h3 class="text-xl font-semibold text-foreground mb-2">
+          Restez informé
+        </h3>
+        <p class="text-sm text-muted-foreground mb-6">
+          Recevez mes derniers articles sur l'énergie et l'industrie.
+        </p>
+        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
+          <div class="flex-1">
+            <input
+              type="text"
+              id="newsletter-name"
+              name="name"
+              required
+              minlength="2"
+              placeholder="Prénom"
+              class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+            />
+            <p
+              id="newsletter-name-error"
+              class="text-xs text-red-500 mt-1 hidden"
+            >
+            </p>
+          </div>
+          <div class="flex-1">
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              required
+              placeholder="Adresse email"
+              class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
+            />
+            <p
+              id="newsletter-email-error"
+              class="text-xs text-red-500 mt-1 hidden"
+            >
+            </p>
+          </div>
+          <button
+            type="submit"
+            class="px-6 py-3 bg-accent text-accent-foreground text-sm font-medium rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Icon name="send" size="sm" />
+            <span>S'inscrire</span>
+          </button>
+        </form>
+        <p id="newsletter-status" class="mt-3 text-sm hidden"></p>
+      </div>
+    </div>
+
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">
+      <!-- Navigation -->
+      <div>
+        <h3 class="text-sm font-semibold text-foreground mb-4">Navigation</h3>
+        <ul class="space-y-2">
+          {
+            NAV_LINKS.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class:list={[
+                    "text-sm transition-colors",
+                    link.isContact
+                      ? "text-accent hover:opacity-80 font-medium"
+                      : "text-muted-foreground hover:text-accent",
+                  ]}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="text-sm font-semibold text-foreground mb-4">Contact</h3>
+        <ul class="space-y-2">
+          {
+            CONTACT_LINKS.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <Icon name={link.icon} size="sm" />
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div class="col-span-2 md:col-span-1">
+        <h3
+          class="text-sm font-semibold text-foreground mb-4 text-center md:text-left"
+        >
+          Suivez-moi
+        </h3>
+        <div class="flex gap-3 justify-center md:justify-start">
+          {
+            SOCIAL_LINKS.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-9 h-9 rounded-lg bg-muted/50 border border-border flex items-center justify-center text-muted-foreground hover:text-accent hover:border-accent/50 transition-all"
+                aria-label={link.name}
+              >
+                <Icon name={link.icon} size="sm" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-6 border-t border-border">
+      <div class="flex flex-col items-center gap-3">
+        <Logo size="sm" />
+        <p class="text-xs text-muted-foreground">
+          © {SITE_CONFIG.currentYear} Tous droits réservés.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { initializeWithAstro } from "../lib/client-utils";
+  import {
+    validateField,
+    validateEmailField,
+    showStatus,
+    hideError,
+  } from "../lib/form-validation-ui";
+
+  initializeWithAstro(() => {
+    const form = document.getElementById("newsletter-form") as HTMLFormElement;
+    const status = document.getElementById("newsletter-status");
+    const submitBtn = form?.querySelector(
+      'button[type="submit"]',
+    ) as HTMLButtonElement;
+
+    const nameInput = document.getElementById(
+      "newsletter-name",
+    ) as HTMLInputElement;
+    const emailInput = document.getElementById(
+      "newsletter-email",
+    ) as HTMLInputElement;
+    const nameError = document.getElementById("newsletter-name-error");
+    const emailError = document.getElementById("newsletter-email-error");
+
+    // Validation en temps réel
+    nameInput?.addEventListener("blur", () =>
+      validateField(nameInput, nameError, 2, "Le prénom"),
+    );
+    emailInput?.addEventListener("blur", () =>
+      validateEmailField(emailInput, emailError),
+    );
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!submitBtn || !status) return;
+
+      const isNameValid = validateField(nameInput, nameError, 2, "Le prénom");
+      const isEmailValid = validateEmailField(emailInput, emailError);
+
+      if (!isNameValid || !isEmailValid) {
+        showStatus(status, "✗ Veuillez corriger les erreurs", false);
+        return;
+      }
+
+      const originalContent = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Inscription...</span>";
+
+      const formData = new FormData(form);
+      const name = formData.get("name");
+      const email = formData.get("email");
+
+      try {
+        const response = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          showStatus(
+            status,
+            "✓ Inscription confirmée ! Merci de votre intérêt.",
+            true,
+          );
+          form.reset();
+          hideError(nameInput, nameError);
+          hideError(emailInput, emailError);
+
+          setTimeout(() => {
+            status.classList.add("hidden");
+          }, 5000);
+        } else {
+          const errorMessage = result.error || "Erreur lors de l'inscription";
+          showStatus(status, `✗ ${errorMessage}`, false);
+        }
+      } catch (error) {
+        showStatus(status, "✗ Erreur réseau. Vérifiez votre connexion.", false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalContent;
+      }
+    });
+  });
+</script>

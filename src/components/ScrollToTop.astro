@@ -1,0 +1,57 @@
+---
+// Composant de bouton flottant pour retourner en haut de page
+---
+
+<button
+    id="scroll-to-top"
+    aria-label="Retour en haut"
+    class="fixed bottom-8 left-8 w-12 h-12 bg-accent text-accent-foreground rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:scale-110 hover:shadow-xl z-50 flex items-center justify-center"
+>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+    >
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+    </svg>
+</button>
+
+<script>
+    import { initializeWithAstro } from "../lib/client-utils";
+
+    initializeWithAstro(() => {
+        const scrollToTopBtn = document.getElementById("scroll-to-top");
+
+        // Afficher/masquer le bouton selon la position de scroll
+        function toggleScrollButton() {
+            if (window.scrollY > 300) {
+                scrollToTopBtn?.classList.remove("opacity-0", "invisible");
+                scrollToTopBtn?.classList.add("opacity-100", "visible");
+            } else {
+                scrollToTopBtn?.classList.remove("opacity-100", "visible");
+                scrollToTopBtn?.classList.add("opacity-0", "invisible");
+            }
+        }
+
+        // Retour en haut avec animation fluide
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }
+
+        // Événements
+        window.addEventListener("scroll", toggleScrollButton);
+        scrollToTopBtn?.addEventListener("click", scrollToTop);
+
+        // Vérifier la position au chargement
+        toggleScrollButton();
+    });
+</script>

@@ -1,0 +1,104 @@
+---
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { NAV_LINKS, SITE_CONFIG } from "../lib/constants";
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
+>
+  <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="hover:opacity-80 transition-opacity">
+        <Logo size="md" />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        <ul class="flex items-center gap-8">
+          {
+            NAV_LINKS.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class:list={[
+                    "text-sm font-medium transition-colors",
+                    link.isContact
+                      ? "px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:opacity-90"
+                      : currentPath === link.href
+                        ? "text-accent"
+                        : "text-muted-foreground hover:text-accent",
+                  ]}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <ThemeToggle id="theme-toggle" />
+      </div>
+
+      <!-- Mobile: Theme Toggle + Menu Button -->
+      <div class="flex md:hidden items-center gap-2">
+        <ThemeToggle id="theme-toggle-mobile" />
+
+        <button
+          id="mobile-menu-btn"
+          class="p-2 text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Menu"
+        >
+          <Icon name="menu" size="lg" class="menu-icon-open" />
+          <Icon name="close" size="lg" class="hidden menu-icon-close" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden pb-4">
+      <ul class="flex flex-col gap-2">
+        {
+          NAV_LINKS.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class:list={[
+                  "block py-2 text-sm font-medium transition-colors",
+                  link.isContact
+                    ? "px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:opacity-90 text-center"
+                    : currentPath === link.href
+                      ? "text-accent"
+                      : "text-muted-foreground hover:text-accent",
+                ]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  import { initializeWithAstro } from "../lib/client-utils";
+
+  initializeWithAstro(() => {
+    const menuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIconOpen = menuBtn?.querySelector(".menu-icon-open");
+    const menuIconClose = menuBtn?.querySelector(".menu-icon-close");
+
+    menuBtn?.addEventListener("click", () => {
+      mobileMenu?.classList.toggle("hidden");
+      menuIconOpen?.classList.toggle("hidden");
+      menuIconClose?.classList.toggle("hidden");
+    });
+  });
+</script>

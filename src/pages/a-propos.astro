@@ -1,0 +1,240 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import Button from "../components/Button.astro";
+---
+
+<BaseLayout
+  title="À PROPOS"
+  description="Alain Paluku, Ingénieur Électricien spécialisé en réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Master en Électroénergétique, expertise en dimensionnement de centrales hydrauliques et photovoltaïques, systèmes SCADA et maintenance prédictive."
+  keywords={[
+    "ingénieur électricien",
+    "électroénergétique",
+    "réseaux électriques BT MT HT",
+    "énergies renouvelables",
+    "automatisme industriel",
+    "SCADA",
+    "maintenance prédictive",
+    "centrale hydraulique",
+    "photovoltaïque",
+  ]}
+>
+  <section class="py-16 sm:py-24">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12 sm:mb-16 text-center">
+          <h1
+            class="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground font-serif"
+          >
+            À PROPOS
+          </h1>
+        </div>
+
+        <!-- Profile -->
+        <div class="mb-16 sm:mb-20">
+          <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+              <!-- Left: Image -->
+              <div class="flex justify-center lg:justify-start">
+                <img
+                  src="https://assets.alainpaluku.com/profil/alainpaluku.png"
+                  alt="Alain Paluku - Ingénieur Électricien"
+                  width="224"
+                  height="auto"
+                  loading="eager"
+                  fetchpriority="high"
+                  class="w-48 h-auto sm:w-56 sm:h-auto"
+                  style="mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);"
+                />
+              </div>
+
+              <!-- Right: Info -->
+              <div class="text-center lg:text-left">
+                <h2
+                  class="text-2xl sm:text-3xl font-bold text-foreground mb-2 uppercase font-serif"
+                >
+                  Alain Paluku
+                </h2>
+                <p
+                  class="text-base sm:text-lg text-muted-foreground uppercase tracking-wider mb-6"
+                >
+                  Ingénieur Électricien | Développeur Système Embarqué
+                </p>
+
+                <SocialLinks class="justify-center lg:justify-start" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile -->
+        <div class="mb-16 sm:mb-20">
+          <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+            <h2
+              class="text-2xl sm:text-3xl font-semibold text-foreground mb-6 sm:mb-8 font-serif"
+            >
+              Formation
+            </h2>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between items-start mb-1">
+                  <h3
+                    class="text-base sm:text-lg font-semibold text-foreground"
+                  >
+                    Master en Électroénergétique
+                  </h3>
+                  <span class="text-sm text-muted-foreground">En cours</span>
+                </div>
+                <p class="text-sm sm:text-base text-muted-foreground">
+                  Université Catholique la Sapientia – Goma
+                </p>
+              </div>
+              <div>
+                <div class="flex justify-between items-start mb-1">
+                  <h3
+                    class="text-base sm:text-lg font-semibold text-foreground"
+                  >
+                    Licence en Génie Électrique
+                  </h3>
+                  <span class="text-sm text-muted-foreground">2025</span>
+                </div>
+                <p class="text-sm sm:text-base text-muted-foreground">
+                  Université Catholique la Sapientia – Goma
+                </p>
+              </div>
+              <div>
+                <div class="flex justify-between items-start mb-1">
+                  <h3
+                    class="text-base sm:text-lg font-semibold text-foreground"
+                  >
+                    Diplôme d'État en Électricité
+                  </h3>
+                  <span class="text-sm text-muted-foreground">2021</span>
+                </div>
+                <p class="text-sm sm:text-base text-muted-foreground">
+                  Institut Kyeshero – Goma
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domaines d'expertise -->
+        <div class="mb-16 sm:mb-20">
+          <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+            <h2
+              class="text-2xl sm:text-3xl font-semibold text-foreground mb-6 sm:mb-8 font-serif"
+            >
+              Domaines d'expertise
+            </h2>
+            <div class="space-y-8">
+              <div>
+                <h3
+                  class="text-base sm:text-lg font-semibold text-foreground mb-3"
+                >
+                  Énergie
+                </h3>
+                <ul
+                  class="space-y-2 text-sm sm:text-base text-muted-foreground"
+                >
+                  <li>• Dimensionnement de réseaux électriques BT, MT et HT</li>
+                  <li>
+                    • Dimensionnement de centrales hydrauliques et
+                    photovoltaïques
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3
+                  class="text-base sm:text-lg font-semibold text-foreground mb-3"
+                >
+                  Industrie
+                </h3>
+                <ul
+                  class="space-y-2 text-sm sm:text-base text-muted-foreground"
+                >
+                  <li>
+                    • Conception et réalisation d'installations électriques
+                    industrielles
+                  </li>
+                  <li>
+                    • Mise en œuvre de solutions de sécurité et protection
+                    industrielle
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3
+                  class="text-base sm:text-lg font-semibold text-foreground mb-3"
+                >
+                  Automatisme
+                </h3>
+                <ul
+                  class="space-y-2 text-sm sm:text-base text-muted-foreground"
+                >
+                  <li>
+                    • Conception et mise en œuvre de solutions d'automatisation
+                    industrielle
+                  </li>
+                  <li>
+                    • Déploiement de systèmes de monitoring et maintenance
+                    prédictive
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Grid -->
+        <div class="grid sm:grid-cols-2 gap-6 mb-16 sm:mb-20">
+          <div
+            class="p-6 sm:p-8 rounded-xl bg-accent/5 border border-accent/20 text-center"
+          >
+            <h3
+              class="text-lg sm:text-xl font-semibold text-foreground mb-3 font-serif"
+            >
+              Articles
+            </h3>
+            <p class="text-sm text-muted-foreground mb-6">
+              Explorez les articles techniques et analyses du secteur
+            </p>
+            <Button
+              href="/articles"
+              variant="secondary"
+              icon="arrow"
+              class="px-6 py-3 text-sm"
+            >
+              Lire les articles
+            </Button>
+          </div>
+
+          <!-- CTA -->
+          <div
+            class="p-6 sm:p-8 lg:p-10 rounded-xl bg-accent/5 border border-accent/20 text-center"
+          >
+            <h3
+              class="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4 font-serif"
+            >
+              Travaillons ensemble
+            </h3>
+            <p
+              class="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto"
+            >
+              Projet en réseaux électriques ou automatisme ? Discutons.
+            </p>
+            <Button
+              href="/contact"
+              variant="primary"
+              icon="arrow"
+              class="px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base"
+            >
+              Me contacter
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

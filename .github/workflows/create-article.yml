@@ -1,0 +1,228 @@
+name: 📝 Créer un Nouvel Article
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Titre de l''article'
+        required: true
+        type: string
+      category:
+        description: 'Catégorie de l''article'
+        required: true
+        type: choice
+        options:
+          - Énergie
+          - Industrie
+          - Automatisme
+      description:
+        description: 'Description courte (SEO)'
+        required: true
+        type: string
+      image_url:
+        description: 'URL de l''image (Unsplash recommandé)'
+        required: false
+        type: string
+        default: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200'
+
+jobs:
+  create-article:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      
+      - name: 🏷️ Générer le slug
+        id: slug
+        run: |
+          SLUG=$(echo "${{ github.event.inputs.title }}" | \
+            iconv -t ascii//TRANSLIT | \
+            sed -r 's/[^a-zA-Z0-9]+/-/g' | \
+            sed -r 's/^-+\|-+$//g' | \
+            tr A-Z a-z)
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          echo "✅ Slug généré: $SLUG"
+      
+      - name: 📝 Créer le fichier article
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          cat > src/content/blog/${{ steps.slug.outputs.slug }}.md << 'EOF'
+          ---
+          title: "${{ github.event.inputs.title }}"
+          description: "${{ github.event.inputs.description }}"
+          date: $DATE
+          image: "${{ github.event.inputs.image_url }}"
+          images:
+            - "${{ github.event.inputs.image_url }}"
+            - "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200"
+            - "/svg/${{ steps.slug.outputs.slug }}.svg"
+          category: "${{ github.event.inputs.category }}"
+          draft: true
+          author: "Alain Paluku"
+          authorImage: "https://assets.alainpaluku.com/profil/avatar.png"
+          resources:
+            - title: "Documentation"
+              url: "https://example.com"
+              type: "documentation"
+          ---
+
+          ## Introduction
+
+          [À compléter - Contexte et problématique]
+
+          ![Schéma principal](/svg/${{ steps.slug.outputs.slug }}.svg)
+
+          ## Architecture / Principe
+
+          [À compléter - Description technique]
+
+          ### Tableau de Spécifications
+
+          | Paramètre | Valeur | Unité |
+          |-----------|--------|-------|
+          | Param 1   | 100    | Unit  |
+          | Param 2   | 200    | Unit  |
+          | Param 3   | 300    | Unit  |
+
+          ### Code Exemple
+
+          \`\`\`python
+          # Code à ajouter
+          def calculate_power(voltage, current):
+              """Calcul de la puissance électrique"""
+              return voltage * current
+
+          # Exemple
+          P = calculate_power(230, 10)  # 2300 W
+          print(f"Puissance: {P} W")
+          \`\`\`
+
+          ### Formules Mathématiques
+
+          La formule de base:
+
+          $P = V \times I$
+
+          Équation détaillée:
+
+          $$
+          P = V \times I = R \times I^2 = \frac{V^2}{R}
+          $$
+
+          Où:
+          - $P$ : Puissance (W)
+          - $V$ : Tension (V)
+          - $I$ : Courant (A)
+          - $R$ : Résistance (Ω)
+
+          ## Implémentation
+
+          [À compléter - Détails d'implémentation]
+
+          ![Image secondaire](https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200)
+
+          ## Résultats
+
+          [À compléter - Résultats et analyses]
+
+          ### Tableau Comparatif
+
+          | Critère | Avant | Après | Amélioration |
+          |---------|-------|-------|--------------|
+          | Métrique 1 | 100 | 150 | +50% |
+          | Métrique 2 | 200 | 250 | +25% |
+          | Métrique 3 | 300 | 400 | +33% |
+
+          ## Conclusion
+
+          [À compléter - Synthèse et perspectives]
+          EOF
+          
+          echo "✅ Article créé: src/content/blog/${{ steps.slug.outputs.slug }}.md"
+      
+      - name: 🎨 Créer le template SVG
+        run: |
+          mkdir -p public/svg
+          cat > public/svg/${{ steps.slug.outputs.slug }}.svg << 'EOF'
+          <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <style>
+              .animated {
+                animation: pulse 2s ease-in-out infinite;
+              }
+              @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+              }
+            </style>
+            
+            <!-- Votre SVG animé ici -->
+            <circle cx="400" cy="200" r="50" fill="#2FA4DE" class="animated"/>
+            
+            <text x="400" y="350" text-anchor="middle" font-size="20" fill="#343b58">
+              SVG à personnaliser
+            </text>
+          </svg>
+          EOF
+          
+          echo "✅ Template SVG créé: public/svg/${{ steps.slug.outputs.slug }}.svg"
+      
+      - name: 🔀 Créer Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "📝 Nouvel article: ${{ github.event.inputs.title }}"
+          branch: article/${{ steps.slug.outputs.slug }}
+          delete-branch: true
+          title: "📝 Nouvel article: ${{ github.event.inputs.title }}"
+          body: |
+            ## 📝 Nouvel Article
+            
+            **Titre:** ${{ github.event.inputs.title }}  
+            **Catégorie:** ${{ github.event.inputs.category }}  
+            **Description:** ${{ github.event.inputs.description }}  
+            **Slug:** `${{ steps.slug.outputs.slug }}`
+            
+            ### 📁 Fichiers créés
+            
+            - ✅ `src/content/blog/${{ steps.slug.outputs.slug }}.md`
+            - ✅ `public/svg/${{ steps.slug.outputs.slug }}.svg`
+            
+            ### ✍️ À faire
+            
+            - [ ] ✅ Titre présent et descriptif
+            - [ ] ✅ Date au format YYYY-MM-DD
+            - [ ] ✅ Description SEO (150-160 caractères)
+            - [ ] ✅ Image principale configurée
+            - [ ] ✅ Images secondaires (au moins 2)
+            - [ ] ✅ Catégorie valide
+            - [ ] 📝 Rédiger l'introduction
+            - [ ] 📝 Ajouter le contenu technique
+            - [ ] 🎨 Personnaliser le SVG animé
+            - [ ] 💻 Ajouter au moins 1 extrait de code
+            - [ ] 🔢 Ajouter au moins 1 formule mathématique
+            - [ ] 📊 Ajouter au moins 1 tableau
+            - [ ] 🖼️ Vérifier toutes les images
+            - [ ] 📚 Compléter les ressources
+            - [ ] ✍️ Vérifier l'orthographe
+            - [ ] ✅ Passer `draft: false` quand prêt
+            
+            ### 🎨 SVG Animé
+            
+            Le fichier SVG template a été créé dans `public/svg/${{ steps.slug.outputs.slug }}.svg`.  
+            Personnalisez-le selon vos besoins!
+            
+            ### 🚀 Publication
+            
+            Une fois l'article terminé:
+            1. Changer `draft: false` dans le frontmatter
+            2. Merger cette PR
+            3. Le site sera automatiquement déployé
+          labels: |
+            article
+            draft
+            ${{ github.event.inputs.category }}
