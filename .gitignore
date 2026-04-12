@@ -12,6 +12,9 @@ node_modules/
 .env
 .env*.local
 
+# Kiro configuration
+.kiro/
+
 # macOS
 .DS_Store
 
