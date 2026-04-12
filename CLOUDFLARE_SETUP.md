@@ -5,7 +5,7 @@
 Voici les variables d'environnement que vous devez ajouter sur Cloudflare Pages :
 
 ```bash
-RESEND_API_KEY=re_UyBczWeE_z1K7dfVySfpupUFbKf5gUXWh
+RESEND_API_KEY=re_8GryjpRr_412YMhL4c6eKeuU3hdrGNpeW
 RESEND_FROM_EMAIL=noreply@alainpaluku.com
 RESEND_TO_EMAIL=contact@alainpaluku.com
 RESEND_AUDIENCE_ID=858287a8-9ae5-400f-8e9f-25a8332e8796
@@ -53,7 +53,7 @@ Configurez les paramètres suivants :
 
 #### Variable 1 : RESEND_API_KEY
 - **Variable name** : `RESEND_API_KEY`
-- **Value** : `re_UyBczWeE_z1K7dfVySfpupUFbKf5gUXWh`
+- **Value** : `re_8GryjpRr_412YMhL4c6eKeuU3hdrGNpeW`
 - Cliquez sur **"Add variable"**
 
 #### Variable 2 : RESEND_FROM_EMAIL
