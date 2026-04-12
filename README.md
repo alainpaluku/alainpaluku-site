@@ -3,67 +3,163 @@
 Site web personnel d'Alain Paluku, ingénieur électricien spécialisé en développement de systèmes embarqués.
 
 [![Astro](https://img.shields.io/badge/Astro-5.0-FF5D01?logo=astro)](https://astro.build)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare)](https://pages.cloudflare.com)
 
 ---
 
+## 📖 Description
+
+Site portfolio avec blog technique, formulaire de contact et newsletter. Construit avec Astro 5 en mode SSR (Server-Side Rendering) et déployé sur Cloudflare Pages.
+
+**Fonctionnalités** :
+- 📝 Blog technique avec articles Markdown
+- 📧 Formulaire de contact (Resend API)
+- 📬 Newsletter (Resend API)
+- 🎨 Design responsive avec Tailwind CSS
+- 🔍 SEO optimisé (sitemaps, RSS, Open Graph)
+- ⚡ Performance optimale (Cloudflare Edge)
+
+---
+
 ## 🚀 Démarrage Rapide
 
+### Prérequis
+
+- [Bun](https://bun.sh/) (recommandé) ou Node.js 20+
+- Compte [Resend](https://resend.com/) pour les emails
+- Compte [Cloudflare](https://cloudflare.com/) pour le déploiement
+
+### Installation
+
 ```bash
-# Installation
+# Cloner le repository
+git clone https://github.com/alainpaluku/alainpaluku-site.git
+cd alainpaluku-site
+
+# Installer les dépendances
 bun install
 
-# Développement
+# Créer le fichier .env
+cp .env.example .env
+# Puis éditer .env avec vos clés API
+```
+
+### Configuration `.env`
+
+```bash
+RESEND_API_KEY=your_resend_api_key
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+RESEND_TO_EMAIL=contact@yourdomain.com
+RESEND_AUDIENCE_ID=your_audience_id
+```
+
+### Développement
+
+```bash
+# Lancer le serveur de développement
 bun run dev
 
-# Build production
+# Le site sera accessible sur http://localhost:3000
+```
+
+### Build
+
+```bash
+# Build pour production
 bun run build
 
-# Preview
+# Preview du build
 bun run preview
 ```
 
 ---
 
-## 📚 Documentation
+## 🌍 Déploiement sur Cloudflare Pages
 
-- **[DOCUMENTATION.md](./DOCUMENTATION.md)** - Guide complet (SEO, déploiement, checklist)
-- **[ARCHITECTURE_SEO.md](./ARCHITECTURE_SEO.md)** - Architecture détaillée des sitemaps
-- **[GUIDE_REDACTION_ARTICLES.md](./GUIDE_REDACTION_ARTICLES.md)** - Guide de rédaction d'articles
-- **[STRUCTURE_ARTICLES.md](./STRUCTURE_ARTICLES.md)** - Référence rapide structure
+### 1. Créer un Projet Pages
+
+1. Allez sur https://dash.cloudflare.com/
+2. **Workers & Pages** > **Create application**
+3. Sélectionnez l'onglet **"Pages"**
+4. **Connect to Git** > Sélectionnez votre repository
+
+### 2. Configuration Build
+
+| Paramètre | Valeur |
+|-----------|--------|
+| **Framework preset** | `Astro` |
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+| **Root directory** | (laisser vide) |
+
+### 3. Variables d'Environnement
+
+Dans **Settings** > **Environment variables**, ajoutez :
+
+```
+RESEND_API_KEY=your_key
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+RESEND_TO_EMAIL=contact@yourdomain.com
+RESEND_AUDIENCE_ID=your_audience_id
+```
+
+### 4. Déployer
+
+Cliquez sur **"Save and Deploy"**. Le site sera disponible sur `https://your-project.pages.dev`
+
+### 5. Domaine Personnalisé (Optionnel)
+
+1. **Custom domains** > **Set up a custom domain**
+2. Ajoutez votre domaine
+3. Configurez les DNS selon les instructions Cloudflare
 
 ---
 
-## 🏗️ Architecture SEO Automatique
+## 🛠️ Technologies
 
-Le site génère automatiquement 4 sitemaps pour un référencement optimal:
-
-1. **Sitemap Principal** (`/sitemap-0.xml`) - Toutes les pages
-2. **Sitemap Images** (`/sitemap-images.xml`) - Toutes les images des articles
-3. **Sitemap SVG** (`/sitemap-svg.xml`) - Schémas techniques SVG
-4. **Sitemap Index** (`/sitemap-index.xml`) - Point d'entrée unique
-
-### Workflow Automatique
-
-```
-Créer article → bun run build → Deploy → Indexation automatique
-```
-
-Chaque nouvel article avec frontmatter complet est automatiquement:
-- ✅ Ajouté au sitemap principal
-- ✅ Toutes ses images référencées dans sitemap-images.xml
-- ✅ Ses SVG référencés dans sitemap-svg.xml
-- ✅ Ajouté au flux RSS
-
-**Aucune action manuelle requise!**
+| Technologie | Usage |
+|-------------|-------|
+| **Astro 5** | Framework SSR |
+| **TypeScript** | Type safety |
+| **Tailwind CSS** | Styling |
+| **Cloudflare Pages** | Hébergement + Edge |
+| **Resend** | Service email |
+| **KaTeX** | Formules mathématiques |
 
 ---
 
-## 📝 Créer un Article
+## 📁 Structure du Projet
 
-### Structure Obligatoire
+```
+alainpaluku-site/
+├── src/
+│   ├── components/       # Composants Astro réutilisables
+│   ├── content/
+│   │   └── blog/        # Articles Markdown
+│   ├── layouts/         # Layouts de page
+│   ├── lib/             # Utilitaires TypeScript
+│   ├── pages/
+│   │   ├── api/         # API endpoints (contact, newsletter)
+│   │   ├── articles/    # Pages articles
+│   │   └── *.astro      # Pages du site
+│   ├── scripts/         # Scripts client
+│   └── styles/          # CSS global
+├── public/              # Assets statiques
+├── .env                 # Variables d'environnement (local)
+├── astro.config.mjs     # Configuration Astro
+└── package.json         # Dépendances
+```
+
+Voir [ARCHITECTURE.md](./ARCHITECTURE.md) pour plus de détails.
+
+---
+
+## 📝 Ajouter un Article
+
+1. Créer un fichier dans `src/content/blog/mon-article.md`
+2. Ajouter le frontmatter :
 
 ```yaml
 ---
@@ -81,106 +177,42 @@ authorImage: "https://assets.alainpaluku.com/profil/avatar.png"
 ---
 ```
 
-### Contenu Requis
-
-- Minimum 2 images secondaires
-- Au moins 1 tableau de données
-- Au moins 1 extrait de code
-- Au moins 1 formule mathématique (KaTeX)
-
-Voir `GUIDE_REDACTION_ARTICLES.md` pour le guide complet.
+3. Rédiger le contenu en Markdown
+4. Commit et push → Déploiement automatique
 
 ---
 
-## 🛠️ Technologies
+## 🔧 Scripts Disponibles
 
-| Technologie | Usage |
-|-------------|-------|
-| Astro 5 | Framework SSR |
-| Tailwind CSS | Styling |
-| TypeScript | Type safety |
-| Cloudflare Pages | Hébergement |
-| Resend | Service email |
-| KaTeX | Formules mathématiques |
+```bash
+bun run dev      # Serveur de développement
+bun run build    # Build production
+bun run preview  # Preview du build
+```
 
 ---
 
-## 📊 Optimisations
+## 📊 SEO & Performance
 
-- ✅ Sitemaps multiples pour SEO optimal
-- ✅ Cache edge Cloudflare (30j images, 1an assets)
-- ✅ Compression Brotli automatique
-- ✅ HTTP/3 activé
-- ✅ Images lazy-loaded
-- ✅ Code splitting
-- ✅ Headers de sécurité (CSP, X-Frame-Options)
+- ✅ Sitemaps automatiques (pages, images)
+- ✅ Flux RSS complet
 - ✅ Open Graph + Twitter Cards
 - ✅ Schema.org structured data
-- ✅ RSS feed complet
-
----
-
-## 🌍 Déploiement Cloudflare
-
-### Configuration
-
-```bash
-Build command: bun run build
-Build output: dist
-Node version: 20
-```
-
-### Variables d'Environnement
-
-```bash
-RESEND_API_KEY=<votre_clé>
-RESEND_FROM_EMAIL=noreply@alainpaluku.com
-```
-
-Voir `DOCUMENTATION.md` pour les détails complets.
-
----
-
-## 📈 SEO & Indexation
-
-### Soumettre à Google Search Console
-
-```
-https://alainpaluku.com/sitemap-index.xml
-```
-
-### Vérifier les Sitemaps
-
-```bash
-curl https://alainpaluku.com/sitemap-index.xml
-curl https://alainpaluku.com/sitemap-images.xml
-curl https://alainpaluku.com/sitemap-svg.xml
-```
-
----
-
-## 📁 Structure
-
-```
-src/
-├── components/       # Composants Astro
-├── content/blog/     # Articles Markdown
-├── layouts/          # Layouts
-├── lib/              # Utilitaires
-├── pages/
-│   ├── api/          # API endpoints
-│   ├── articles/     # Pages articles
-│   └── sitemap-*.xml.ts  # Sitemaps
-└── styles/           # CSS global
-```
+- ✅ Cache edge Cloudflare
+- ✅ Compression Brotli
+- ✅ HTTP/3 activé
+- ✅ Images lazy-loaded
 
 ---
 
 ## 🤝 Contact
 
-- **Email**: contact@alainpaluku.com
-- **Site**: https://alainpaluku.com
+- **Email** : contact@alainpaluku.com
+- **Site** : https://alainpaluku.com
+- **GitHub** : https://github.com/alainpaluku
 
 ---
 
-**Licence**: Tous droits réservés © 2024 Alain Paluku
+## 📄 Licence
+
+Tous droits réservés © 2024 Alain Paluku
