@@ -54,7 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
       from: `ALAIN PALUKU <${RESEND_CONFIG.fromEmail}>`,
       to: [email],
       subject: `Bienvenue ${name}`,
-      html: getNewsletterWelcomeEmailTemplate({ name, email }),
+      html: getNewsletterWelcomeEmailTemplate({ name }),
     });
 
     if (emailError) {

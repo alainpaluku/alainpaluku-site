@@ -9,6 +9,9 @@ Sitemap: https://alainpaluku.com/sitemap-images.xml
 Sitemap: https://alainpaluku.com/sitemap-svg.xml
 Sitemap: https://alainpaluku.com/rss.xml
 
+# Référencement IA
+LLMs: https://alainpaluku.com/llms.txt
+
 # Optimisation pour les moteurs de recherche IA (GEO)
 User-agent: GPTBot
 Allow: /

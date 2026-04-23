@@ -19,7 +19,6 @@ interface ContactUserEmailParams {
 
 interface NewsletterWelcomeEmailParams {
   name: string;
-  email: string;
 }
 
 // Couleurs Tokyo Night Light (identiques au site)
@@ -43,9 +42,6 @@ const ASSETS = {
   medium: 'https://assets.alainpaluku.com/profil/incon-mails/medium.png',
 };
 
-/**
- * Génère la structure HTML de base pour tous les emails
- */
 function createEmailLayout(content: string): string {
   return `<!DOCTYPE html>
 <html lang="fr">
@@ -69,9 +65,6 @@ function createEmailLayout(content: string): string {
 </html>`;
 }
 
-/**
- * Génère le header commun à tous les emails
- */
 function createEmailHeader(): string {
   return `<tr>
   <td style="padding: 24px 32px; border-bottom: 1px solid ${COLORS.border};">
@@ -90,9 +83,6 @@ function createEmailHeader(): string {
 </tr>`;
 }
 
-/**
- * Génère le footer commun à tous les emails
- */
 function createEmailFooter(includeUnsubscribe: boolean = false): string {
   const unsubscribeSection = includeUnsubscribe ? `
     <tr>
@@ -119,9 +109,6 @@ function createEmailFooter(includeUnsubscribe: boolean = false): string {
 </tr>${unsubscribeSection}`;
 }
 
-/**
- * Génère une section de titre
- */
 function createTitleSection(title: string, subtitle: string): string {
   return `<tr>
   <td style="padding: 24px 32px 0 32px;">
@@ -131,9 +118,6 @@ function createTitleSection(title: string, subtitle: string): string {
 </tr>`;
 }
 
-/**
- * Email admin - Nouveau message de contact
- */
 export function getContactAdminEmailTemplate(params: ContactAdminEmailParams): string {
   const { name, email, subject, message, dateFormatted, timeFormatted } = params;
   
@@ -198,9 +182,6 @@ export function getContactAdminEmailTemplate(params: ContactAdminEmailParams): s
   return createEmailLayout(content);
 }
 
-/**
- * Email utilisateur - Confirmation de réception
- */
 export function getContactUserEmailTemplate(params: ContactUserEmailParams): string {
   const { name, subject } = params;
   
@@ -247,9 +228,6 @@ export function getContactUserEmailTemplate(params: ContactUserEmailParams): str
   return createEmailLayout(content);
 }
 
-/**
- * Email newsletter - Bienvenue
- */
 export function getNewsletterWelcomeEmailTemplate(params: NewsletterWelcomeEmailParams): string {
   const { name } = params;
   

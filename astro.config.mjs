@@ -8,7 +8,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://alainpaluku.com',
-  output: 'hybrid',
+  output: 'static',
   adapter: cloudflare(),
   server: {
     port: 3000,
@@ -73,13 +73,19 @@ export default defineConfig({
     },
   },
   // Optimisations Cloudflare
-  vite: {
-    build: {
-      minify: false,
-    },
-  },
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
+  },
+  vite: {
+    build: {
+      minify: 'esbuild',
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: undefined,
+        },
+      },
+    },
   },
 });

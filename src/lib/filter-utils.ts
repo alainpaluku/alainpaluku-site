@@ -17,7 +17,20 @@ export function createFilterSystem(
 
   let activeFilter: string | null = null;
 
-  function filterItems() {
+  const ACTIVE_CLASSES = ["border-accent", "bg-accent/10", "text-accent"];
+  const INACTIVE_CLASSES = ["border-border", "bg-muted/20", "text-muted-foreground"];
+
+  function setButtonActive(button: Element, active: boolean) {
+    if (active) {
+      button.classList.remove(...INACTIVE_CLASSES);
+      button.classList.add(...ACTIVE_CLASSES);
+    } else {
+      button.classList.remove(...ACTIVE_CLASSES);
+      button.classList.add(...INACTIVE_CLASSES);
+    }
+  }
+
+  function applyFilters() {
     const searchTerm = searchInput?.value.toLowerCase() || "";
     const items = document.querySelectorAll(itemSelector);
     let visibleCount = 0;
@@ -36,34 +49,21 @@ export function createFilterSystem(
 
       const matchesFilter =
         !activeFilter ||
-        (filterAttribute === "data-tags"
-          ? tags.includes(activeFilter)
-          : category === activeFilter);
+        (filterAttribute === "data-tags" ? tags.includes(activeFilter) : category === activeFilter);
 
-      if (matchesSearch && matchesFilter) {
-        (item as HTMLElement).style.display = "block";
-        visibleCount++;
-      } else {
-        (item as HTMLElement).style.display = "none";
-      }
+      (item as HTMLElement).style.display = matchesSearch && matchesFilter ? "block" : "none";
+      if (matchesSearch && matchesFilter) visibleCount++;
     });
 
-    if (visibleCountEl) {
-      visibleCountEl.textContent = visibleCount.toString();
-    }
+    if (visibleCountEl) visibleCountEl.textContent = visibleCount.toString();
 
     if (noResults && container) {
-      if (visibleCount === 0) {
-        noResults.classList.remove("hidden");
-        container.classList.add("opacity-0");
-      } else {
-        noResults.classList.add("hidden");
-        container.classList.remove("opacity-0");
-      }
+      noResults.classList.toggle("hidden", visibleCount > 0);
+      container.classList.toggle("opacity-0", visibleCount === 0);
     }
   }
 
-  searchInput?.addEventListener("input", filterItems);
+  searchInput?.addEventListener("input", applyFilters);
 
   filterButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -73,49 +73,24 @@ export function createFilterSystem(
 
       if (activeFilter === filterValue) {
         activeFilter = null;
-        button.classList.remove("border-accent", "bg-accent/10", "text-accent");
-        button.classList.add(
-          "border-border",
-          "bg-muted/20",
-          "text-muted-foreground"
-        );
+        setButtonActive(button, false);
         clearFilter?.classList.add("hidden");
       } else {
-        filterButtons.forEach((btn) => {
-          btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-          btn.classList.add(
-            "border-border",
-            "bg-muted/20",
-            "text-muted-foreground"
-          );
-        });
-
+        filterButtons.forEach((btn) => setButtonActive(btn, false));
         activeFilter = filterValue;
-        button.classList.remove(
-          "border-border",
-          "bg-muted/20",
-          "text-muted-foreground"
-        );
-        button.classList.add("border-accent", "bg-accent/10", "text-accent");
+        setButtonActive(button, true);
         clearFilter?.classList.remove("hidden");
       }
 
-      filterItems();
+      applyFilters();
     });
   });
 
   clearFilter?.addEventListener("click", () => {
     activeFilter = null;
     if (searchInput) searchInput.value = "";
-    filterButtons.forEach((btn) => {
-      btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-      btn.classList.add(
-        "border-border",
-        "bg-muted/20",
-        "text-muted-foreground"
-      );
-    });
+    filterButtons.forEach((btn) => setButtonActive(btn, false));
     clearFilter.classList.add("hidden");
-    filterItems();
+    applyFilters();
   });
 }

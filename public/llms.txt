@@ -1,0 +1,40 @@
+# Alain Paluku
+
+> Ingénieur Électricien | Développeur Système Embarqué
+
+Alain Paluku est un ingénieur électricien spécialisé en électroénergétique, réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Il partage ses connaissances techniques à travers des articles approfondis sur son site personnel.
+
+## Site
+
+- URL : https://alainpaluku.com
+- Langue : Français
+- Flux RSS : https://alainpaluku.com/rss.xml
+- Sitemap : https://alainpaluku.com/sitemap-index.xml
+
+## Pages principales
+
+- [Accueil](https://alainpaluku.com/) — Présentation et derniers articles
+- [À Propos](https://alainpaluku.com/a-propos/) — Parcours, compétences et expériences
+- [Articles](https://alainpaluku.com/articles/) — Blog technique
+- [Contact](https://alainpaluku.com/contact/) — Formulaire de contact
+
+## Domaines d'expertise
+
+- **Énergie** : réseaux électriques BT/MT/HT, dimensionnement de centrales hydrauliques et photovoltaïques, énergies renouvelables
+- **Industrie** : installations électriques industrielles, sécurité électrique, normes IEC/NF
+- **Automatisme** : systèmes SCADA, automates programmables (PLC), maintenance prédictive, systèmes embarqués
+
+## Articles
+
+Les articles sont publiés à raison de 2 par mois. Chaque article inclut :
+- Une analyse technique approfondie avec schémas
+- Des ressources complémentaires (documentation, code, matériel)
+- Une catégorie parmi : Énergie, Industrie, Automatisme
+
+## Contact
+
+- Email : contact@alainpaluku.com
+- LinkedIn : https://linkedin.com/in/alainpaluku
+- GitHub : https://github.com/alainpaluku
+- Medium : https://medium.com/@alainpaluku
+- Hugging Face : https://huggingface.co/alainpaluku
