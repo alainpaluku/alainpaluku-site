@@ -5,9 +5,12 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://alainpaluku.com',
-  output: 'server', // Mode serveur complet
+  output: 'server',
   adapter: cloudflare({
     imageService: 'passthrough',
+    platformProxy: {
+      enabled: true
+    }
   }),
   server: {
     port: 3000,
