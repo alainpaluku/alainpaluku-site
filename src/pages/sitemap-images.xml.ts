@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getSortedArticles, buildImageUrl, SITE_URL, XML_HEADERS } from '../lib/sitemap-utils';
 
+
 export const GET: APIRoute = async () => {
   const articles = await getSortedArticles();
 

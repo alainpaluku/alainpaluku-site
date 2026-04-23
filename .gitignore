@@ -8,9 +8,19 @@ dist/
 # Dependencies
 node_modules/
 
-# Environment variables
+# Environment variables - NEVER COMMIT
 .env
 .env*.local
+.dev.vars
+
+# Logs de build
+build.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Kiro configuration
 .kiro/
@@ -24,15 +34,6 @@ node_modules/
 *.swp
 *.swo
 *~
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
 # OS
 Thumbs.db

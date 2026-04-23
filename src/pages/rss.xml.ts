@@ -2,6 +2,7 @@ import rss from '@astrojs/rss';
 import type { APIRoute } from 'astro';
 import { getSortedArticles, SITE_URL } from '../lib/sitemap-utils';
 
+
 export const GET: APIRoute = async (context) => {
   const articles = await getSortedArticles();
 

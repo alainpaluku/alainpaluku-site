@@ -1,19 +1,23 @@
 /*
   # Security Headers
-  X-Frame-Options: SAMEORIGIN
+  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   
-  # Content Security Policy
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://assets.alainpaluku.com; frame-ancestors 'self'
+  # Content Security Policy (optimisé)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://assets.alainpaluku.com https://images.unsplash.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   
   # Cloudflare optimizations
   CF-Cache-Status: HIT
   
-  # Cache Control par défaut
+  # Cache Control par défaut (optimisé)
   Cache-Control: public, max-age=3600, s-maxage=7200, stale-while-revalidate=86400
+  
+  # Early Hints pour les ressources critiques
+  Link: </assets/styles.css>; rel=preload; as=style
 
 # Page d'accueil - cache court
 /
@@ -72,10 +76,14 @@
   Cache-Control: public, max-age=3600, s-maxage=7200
   Content-Type: text/plain
 
-# API routes - pas de cache
+# API routes - pas de cache, rate limiting via Cloudflare
 /api/*
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private
   X-Robots-Tag: noindex
+  X-Content-Type-Options: nosniff
+  Access-Control-Allow-Methods: POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type
+  Access-Control-Max-Age: 86400
 
 # RSS Feed (si ajouté plus tard)
 /rss.xml

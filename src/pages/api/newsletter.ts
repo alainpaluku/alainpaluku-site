@@ -4,21 +4,46 @@ import { createErrorResponse, createSuccessResponse, parseRequestBody, checkRese
 import { getNewsletterWelcomeEmailTemplate } from "../../lib/email-templates";
 import { resendClient, RESEND_CONFIG } from "../../lib/resend-client";
 import { logger } from "../../lib/logger";
+import { checkRateLimit, getClientIP } from "../../lib/rate-limit";
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     logger.info("Newsletter API - Requête reçue");
-    
+
+    // Rate limiting
+    const clientIP = getClientIP(request);
+    const rateLimit = checkRateLimit(clientIP, { maxRequests: 2, windowMs: 60000 });
+
+    if (!rateLimit.allowed) {
+      logger.warning("Rate limit dépassé", { ip: clientIP });
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Trop de requêtes. Veuillez réessayer dans une minute."
+        }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-RateLimit-Limit': '2',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': new Date(rateLimit.resetTime).toISOString(),
+            'Retry-After': Math.ceil((rateLimit.resetTime - Date.now()) / 1000).toString(),
+          }
+        }
+      );
+    }
+
     // Valider la configuration Resend
     const configError = checkResendConfig();
     if (configError) return configError;
-    
+
     // Parser le body
     const { data: body, error: parseError } = await parseRequestBody(request);
     if (parseError) return parseError;
-    
+
     const validation = validateNewsletterForm(body);
 
     if (!validation.valid) {

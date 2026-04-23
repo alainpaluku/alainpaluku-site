@@ -21,3 +21,5 @@ export function validateResendConfig(): { valid: boolean; missing: string[] } {
 
   return { valid: missing.length === 0, missing };
 }
+
+

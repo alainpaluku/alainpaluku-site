@@ -1,22 +1,20 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-import mdx from '@astrojs/mdx';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://alainpaluku.com',
-  output: 'static',
-  adapter: cloudflare(),
+  output: 'server', // Mode serveur complet
+  adapter: cloudflare({
+    imageService: 'passthrough',
+  }),
   server: {
     port: 3000,
     host: true,
   },
   integrations: [
     tailwind(),
-    mdx(),
     sitemap({
       filter: (page) => {
         // Exclure les pages API et les pages de test
@@ -61,29 +59,25 @@ export default defineConfig({
       },
     }),
   ],
-  markdown: {
-    remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
-    shikiConfig: {
-      themes: {
-        light: 'tokyo-night',
-        dark: 'tokyo-night',
-      },
-      wrap: true,
-    },
-  },
   // Optimisations Cloudflare
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
+    assets: '_astro',
   },
   vite: {
     build: {
       minify: 'esbuild',
       cssMinify: true,
+      target: 'esnext',
       rollupOptions: {
         output: {
-          manualChunks: undefined,
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('resend')) return 'vendor-resend';
+              return 'vendor';
+            }
+          },
         },
       },
     },

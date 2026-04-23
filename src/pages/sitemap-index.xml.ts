@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { SITE_URL, XML_HEADERS } from '../lib/sitemap-utils';
 
+
 export const GET: APIRoute = async () => {
   const now = new Date().toISOString();
 
