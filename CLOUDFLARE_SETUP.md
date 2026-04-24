@@ -1,73 +1,43 @@
-# Configuration Cloudflare Pages
+# Configuration Cloudflare Pages avec Astro 6
 
-## 🚀 Configuration Build
-
-Dans le dashboard Cloudflare Pages:
+## 🚀 Configuration dans le Dashboard Cloudflare Pages
 
 ### Build Settings
-- **Framework preset**: `Astro`
 - **Build command**: `npm run build`
 - **Build output directory**: `dist`
 - **Root directory**: (laisser vide)
 - **Node version**: `20`
 
-### Environment Variables (Production)
+### Environment Variables
 
-Ajouter ces variables dans **Settings > Environment variables > Production**:
+Dans **Settings > Environment variables > Production**, ajoutez :
 
 ```
-RESEND_API_KEY=votre_clé_api
+RESEND_API_KEY=re_8GryjpRr_412YMhL4c6eKeuU3hdrGNpeW
 RESEND_FROM_EMAIL=noreply@alainpaluku.com
 RESEND_TO_EMAIL=contact@alainpaluku.com
-RESEND_AUDIENCE_ID=votre_audience_id
+RESEND_AUDIENCE_ID=858287a8-9ae5-400f-8e9f-25a8332e8796
 ```
 
-## 🔧 Vérifications
+## 📝 Notes importantes
 
-### 1. Vérifier le build localement
-```bash
-npm run build
-```
+- **Pas besoin de wrangler.toml** : Cloudflare Pages génère automatiquement la configuration
+- Le build Astro avec `output: 'server'` génère automatiquement les Functions Cloudflare
+- Les variables d'environnement doivent être configurées dans le dashboard Cloudflare
 
-### 2. Vérifier les logs Cloudflare
-- Aller dans le dashboard Cloudflare
-- Sélectionner votre projet
-- Onglet **Deployments**
-- Cliquer sur le dernier déploiement
-- Voir les logs de build
-
-### 3. Erreurs communes
-
-#### "Build failed"
-- Vérifier que Node 20 est utilisé
-- Vérifier les variables d'environnement
-- Vérifier les logs de build
-
-#### "Site ne charge pas"
-- Vérifier que `output: 'server'` est dans astro.config.mjs
-- Vérifier que l'adaptateur Cloudflare est installé
-- Vérifier les logs de runtime
-
-#### "API routes ne fonctionnent pas"
-- Vérifier les variables d'environnement
-- Vérifier les logs de la fonction
-- Tester avec curl
-
-## 📝 Commandes utiles
+## 🔧 Commandes locales
 
 ```bash
-# Build local
+# Build
 npm run build
 
-# Preview local
+# Preview (nécessite wrangler pour tester localement)
 npm run preview
 
-# Nettoyer
+# Clean
 npm run clean
 ```
 
-## 🔗 Liens utiles
+## � Dashboard Cloudflare
 
-- Dashboard: https://dash.cloudflare.com/
-- Logs: Workers & Pages > Votre projet > Deployments
-- Variables: Workers & Pages > Votre projet > Settings > Environment variables
+https://dash.cloudflare.com/ → Workers & Pages → Votre projet
