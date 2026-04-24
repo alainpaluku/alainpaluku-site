@@ -1,14 +1,4 @@
-# Redirections Cloudflare Pages
-
-# Redirection www vers non-www
-https://www.alainpaluku.com/* https://alainpaluku.com/:splat 301!
-
-# Redirections anciennes URLs (si migration)
-# /old-path /new-path 301
-
-# Gestion des erreurs
-/404 /404.html 404
-/500 /500.html 500
+# Redirections Cloudflare Workers
 
 # Trailing slash normalization
 /articles /articles/ 301
