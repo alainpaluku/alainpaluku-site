@@ -10,7 +10,8 @@ export default defineConfig({
     imageService: 'passthrough',
     platformProxy: {
       enabled: true
-    }
+    },
+    prerenderEnvironment: 'node'
   }),
   server: {
     port: 3000,
@@ -84,5 +85,12 @@ export default defineConfig({
         },
       },
     },
+    ssr: {
+      external: ['resend'],
+      noExternal: []
+    },
+    optimizeDeps: {
+      exclude: ['resend']
+    }
   },
 });
