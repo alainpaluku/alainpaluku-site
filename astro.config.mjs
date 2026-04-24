@@ -7,8 +7,7 @@ export default defineConfig({
   site: 'https://alainpaluku.com',
   output: 'server',
   adapter: cloudflare({
-    imageService: 'passthrough',
-    prerenderEnvironment: 'node'
+    imageService: 'passthrough'
   }),
   server: {
     port: 3000,
