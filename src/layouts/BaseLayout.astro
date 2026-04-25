@@ -146,6 +146,25 @@ const fullTitle = `${title} | ${siteTitle}`;
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
+    <!-- SEO Verification Tags -->
+    <!-- Google Search Console - Remplacez par votre code -->
+    <meta name="google-site-verification" content="VOTRE_CODE_GOOGLE_ICI" />
+
+    <!-- Bing Webmaster - Remplacez par votre code -->
+    <meta name="msvalidate.01" content="VOTRE_CODE_BING_ICI" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-XXXXXXXXXX"); // Remplacez par votre ID Google Analytics
+    </script>
+
     <!-- Theme Script -->
     <script is:inline>
       (function () {
