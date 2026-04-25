@@ -18,6 +18,15 @@ export const GET: APIRoute = async () => {
       }));
   });
 
+  // Si pas de SVG, retourner un sitemap vide valide
+  if (svgImages.length === 0) {
+    const emptySitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+</urlset>`;
+    return new Response(emptySitemap, { headers: XML_HEADERS });
+  }
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -28,8 +37,6 @@ ${svgImages.map(svg => `  <url>
       <image:loc>${svg.loc}</image:loc>
       <image:title>${svg.title}</image:title>
       <image:caption>${svg.caption}</image:caption>
-      <image:geo_location>France</image:geo_location>
-      <image:license>${SITE_URL}/licence</image:license>
     </image:image>
   </url>`).join('\n')}
 </urlset>`;
