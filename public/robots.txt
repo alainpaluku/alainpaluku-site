@@ -3,63 +3,11 @@
 User-agent: *
 Allow: /
 
-# Sitemaps - Tous les sitemaps pour un référencement optimal
+# Sitemaps
 Sitemap: https://alainpaluku.com/sitemap-index.xml
 Sitemap: https://alainpaluku.com/sitemap-images.xml
 Sitemap: https://alainpaluku.com/sitemap-svg.xml
 Sitemap: https://alainpaluku.com/rss.xml
 
-# Référencement IA
-LLMs: https://alainpaluku.com/llms.txt
-
-# Optimisation pour les moteurs de recherche IA (GEO)
-User-agent: GPTBot
-Allow: /
-Crawl-delay: 1
-
-User-agent: ChatGPT-User
-Allow: /
-Crawl-delay: 1
-
-User-agent: Google-Extended
-Allow: /
-Crawl-delay: 1
-
-User-agent: anthropic-ai
-Allow: /
-Crawl-delay: 1
-
-User-agent: Claude-Web
-Allow: /
-Crawl-delay: 1
-
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0.5
-
-User-agent: Googlebot-Image
-Allow: /
-Crawl-delay: 0.5
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# Bloquer les scrapers malveillants
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: BLEXBot
-Disallow: /
-
-# Crawl-delay général pour éviter la surcharge
+# Crawl-delay général
 Crawl-delay: 1

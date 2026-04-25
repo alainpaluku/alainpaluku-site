@@ -139,10 +139,10 @@ import {
 
     <!-- Bottom Bar -->
     <div class="pt-6 border-t border-border">
-      <div class="flex flex-col items-center gap-3">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
         <Logo size="sm" />
         <p class="text-xs text-muted-foreground">
-          © {SITE_CONFIG.currentYear} Tous droits réservés.
+          © {new Date().getFullYear()} Tous droits réservés.
         </p>
       </div>
     </div>
