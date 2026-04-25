@@ -5,7 +5,6 @@ import ArticleCard from "../components/ArticleCard.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import Button from "../components/Button.astro";
 
-
 const articles = (await getCollection("blog"))
   .sort(
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
@@ -78,9 +77,10 @@ const articles = (await getCollection("blog"))
               src="https://assets.alainpaluku.com/profil/alainpaluku.png"
               alt="Alain Paluku - Ingénieur Électricien spécialisé en réseaux électriques et automatisme"
               width="224"
-              height="auto"
+              height="300"
               loading="eager"
               fetchpriority="high"
+              decoding="async"
               class="w-48 h-auto sm:w-56 sm:h-auto"
               style="mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);"
             />

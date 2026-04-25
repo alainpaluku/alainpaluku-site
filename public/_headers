@@ -4,88 +4,58 @@
   X-Content-Type-Options: nosniff
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
   
-  # Content Security Policy (optimisé)
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://assets.alainpaluku.com https://images.unsplash.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
-  
-  # Cloudflare optimizations
-  CF-Cache-Status: HIT
-  
-  # Cache Control par défaut (optimisé)
-  Cache-Control: public, max-age=3600, s-maxage=7200, stale-while-revalidate=86400
-  
-  # Early Hints pour les ressources critiques
-  Link: </assets/styles.css>; rel=preload; as=style
+  # Cache Control par défaut
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 # Page d'accueil - cache court
 /
-  Cache-Control: public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400
+  Cache-Control: public, max-age=1800, stale-while-revalidate=86400
 
 # Articles - cache moyen
 /articles/*
-  Cache-Control: public, max-age=7200, s-maxage=14400, stale-while-revalidate=86400
-  Link: </assets/styles.css>; rel=preload; as=style
+  Cache-Control: public, max-age=7200, stale-while-revalidate=86400
 
 # Static assets - cache très long (1 an)
 /assets/*
-  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
+  Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 
 # Images - cache long (30 jours)
 /*.png
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
+  Cache-Control: public, max-age=2592000, immutable
   Access-Control-Allow-Origin: *
 /*.jpg
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
+  Cache-Control: public, max-age=2592000, immutable
   Access-Control-Allow-Origin: *
 /*.jpeg
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
+  Cache-Control: public, max-age=2592000, immutable
   Access-Control-Allow-Origin: *
 /*.webp
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
+  Cache-Control: public, max-age=2592000, immutable
   Access-Control-Allow-Origin: *
 
 # SVG - cache long avec CORS
-/svg/*
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
-  Access-Control-Allow-Origin: *
-  Content-Type: image/svg+xml
 /*.svg
-  Cache-Control: public, max-age=2592000, s-maxage=2592000, immutable
+  Cache-Control: public, max-age=2592000, immutable
   Access-Control-Allow-Origin: *
   Content-Type: image/svg+xml
 
 # Fonts - cache très long (1 an)
 /*.woff2
-  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
-  Access-Control-Allow-Origin: *
-/*.woff
-  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
-  Access-Control-Allow-Origin: *
-/*.ttf
-  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable
+  Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 
 # Sitemap et robots - cache court
 /sitemap*.xml
-  Cache-Control: public, max-age=3600, s-maxage=7200
+  Cache-Control: public, max-age=3600
   Content-Type: application/xml
 /robots.txt
-  Cache-Control: public, max-age=3600, s-maxage=7200
+  Cache-Control: public, max-age=3600
   Content-Type: text/plain
 
-# API routes - pas de cache, rate limiting via Cloudflare
+# API routes - pas de cache
 /api/*
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private
+  Cache-Control: no-store, max-age=0, private
   X-Robots-Tag: noindex
-  X-Content-Type-Options: nosniff
-  Access-Control-Allow-Methods: POST, OPTIONS
-  Access-Control-Allow-Headers: Content-Type
-  Access-Control-Max-Age: 86400
-
-# RSS Feed (si ajouté plus tard)
-/rss.xml
-  Cache-Control: public, max-age=3600, s-maxage=7200
-  Content-Type: application/rss+xml

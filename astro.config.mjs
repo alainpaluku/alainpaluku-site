@@ -60,7 +60,7 @@ export default defineConfig({
   // Optimisations Cloudflare
   compressHTML: true,
   build: {
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always',
     assets: '_astro',
   },
   vite: {
@@ -68,14 +68,10 @@ export default defineConfig({
       minify: 'esbuild',
       cssMinify: true,
       target: 'esnext',
+      cssCodeSplit: false,
       rollupOptions: {
         output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('resend')) return 'vendor-resend';
-              return 'vendor';
-            }
-          },
+          manualChunks: undefined,
         },
       },
     },

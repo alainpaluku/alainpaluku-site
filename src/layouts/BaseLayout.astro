@@ -172,18 +172,24 @@ const fullTitle = `${title} | ${siteTitle}`;
     <!-- Bing Webmaster - Remplacez par votre code -->
     <meta name="msvalidate.01" content="VOTRE_CODE_BING_ICI" />
 
-    <!-- Google Analytics -->
-    <script
-      is:inline
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <!-- Google Analytics - Chargement différé -->
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-XXXXXXXXXX"); // Remplacez par votre ID Google Analytics
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          var script = document.createElement("script");
+          script.async = true;
+          script.src =
+            "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "G-XXXXXXXXXX");
+        }, 3000);
+      });
     </script>
 
     <!-- Theme Script -->
@@ -198,18 +204,45 @@ const fullTitle = `${title} | ${siteTitle}`;
       })();
     </script>
 
-    <!-- PWA Service Worker -->
+    <!-- Critical CSS inline -->
+    <style is:inline>
+      :root {
+        --color-background: 213 214 219;
+        --color-foreground: 52 59 88;
+        --color-muted-foreground: 85 90 120;
+        --color-accent: 52 59 88;
+      }
+      .dark {
+        --color-background: 26 27 38;
+        --color-foreground: 192 202 245;
+        --color-muted-foreground: 140 148 180;
+        --color-accent: 192 202 245;
+      }
+      body {
+        background-color: rgb(var(--color-background));
+        color: rgb(var(--color-foreground));
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+      }
+    </style>
+
+    <!-- PWA Service Worker - Chargement différé -->
     <script is:inline>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw.js")
-            .then((registration) => {
-              console.log("Service Worker enregistré:", registration);
-            })
-            .catch((error) => {
-              console.log("Erreur Service Worker:", error);
-            });
+          setTimeout(() => {
+            navigator.serviceWorker
+              .register("/sw.js")
+              .then((registration) => {
+                console.log("Service Worker enregistré:", registration);
+              })
+              .catch((error) => {
+                console.log("Erreur Service Worker:", error);
+              });
+          }, 2000);
         });
       }
     </script>

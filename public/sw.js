@@ -1,11 +1,7 @@
 const CACHE_NAME = 'alainpaluku-v1';
 const urlsToCache = [
     '/',
-    '/articles/',
-    '/a-propos/',
-    '/contact/',
     '/logo.png',
-    '/logo.svg',
 ];
 
 // Installation du Service Worker
@@ -34,22 +30,38 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Stratégie Network First avec fallback sur le cache
+// Stratégie Cache First pour les assets statiques, Network First pour le reste
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                // Clone la réponse
-                const responseToCache = response.clone();
-
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(event.request, responseToCache);
+    const url = new URL(event.request.url);
+    
+    // Cache First pour les images et assets
+    if (url.pathname.match(/\.(png|jpg|jpeg|svg|webp|woff2|css|js)$/)) {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                return response || fetch(event.request).then((fetchResponse) => {
+                    return caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, fetchResponse.clone());
+                        return fetchResponse;
+                    });
                 });
-
-                return response;
             })
-            .catch(() => {
-                return caches.match(event.request);
-            })
-    );
+        );
+    } else {
+        // Network First pour les pages HTML
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(event.request);
+                })
+        );
+    }
 });
