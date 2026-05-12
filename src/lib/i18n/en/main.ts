@@ -8,7 +8,7 @@ export const nav = {
 export const home = {
   title: 'HOME',
   headline: 'Alain Paluku',
-  subtitle: 'Electrical Engineer | Embedded Systems Developer | Master’s in Electroenergetics in progress',
+  subtitle: 'Electrical Engineer | Embedded Systems Developer',
   contact: 'Contact me',
   about: 'Learn more',
   recentArticles: 'Recent articles',

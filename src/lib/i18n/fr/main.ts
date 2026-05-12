@@ -8,7 +8,7 @@ export const nav = {
 export const home = {
   title: 'ACCUEIL',
   headline: 'Alain Paluku',
-  subtitle: 'Ingénieur Électricien | Développeur Système Embarqué | Master en Électroénergétique en cours',
+  subtitle: 'Ingénieur Électricien | Développeur Système Embarqué',
   contact: 'Me contacter',
   about: 'En savoir plus',
   recentArticles: 'Articles récents',
