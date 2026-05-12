@@ -30,20 +30,23 @@ export function validateField(
   input: HTMLInputElement | HTMLTextAreaElement,
   errorEl: HTMLElement | null,
   minLength: number,
-  fieldName: string
+  fieldName: string,
+  translations?: any
 ): boolean {
   const value = input.value.trim();
 
   if (value.length === 0) {
-    showError(input, errorEl, `${fieldName} requis`);
+    const msg = translations?.required ? translations.required(fieldName) : `${fieldName} requis`;
+    showError(input, errorEl, msg);
     return false;
   }
 
   if (value.length < minLength) {
+    const msg = translations?.minLength ? translations.minLength(fieldName, minLength) : `${fieldName} doit contenir au moins ${minLength} caractères`;
     showError(
       input,
       errorEl,
-      `${fieldName} doit contenir au moins ${minLength} caractères`
+      msg
     );
     return false;
   }
@@ -54,18 +57,21 @@ export function validateField(
 
 export function validateEmailField(
   input: HTMLInputElement,
-  errorEl: HTMLElement | null
+  errorEl: HTMLElement | null,
+  translations?: any
 ): boolean {
   const value = input.value.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (value.length === 0) {
-    showError(input, errorEl, "Email requis");
+    const msg = translations?.required ? translations.required("Email") : "Email requis";
+    showError(input, errorEl, msg);
     return false;
   }
 
   if (!emailRegex.test(value)) {
-    showError(input, errorEl, "Email invalide");
+    const msg = translations?.invalidEmail ? translations.invalidEmail : "Email invalide";
+    showError(input, errorEl, msg);
     return false;
   }
 
