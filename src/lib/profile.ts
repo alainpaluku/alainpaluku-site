@@ -2,8 +2,8 @@ import type { Locale } from './i18n';
 
 export const profile = {
   name: 'Alain Paluku',
-  localImage: '/logo.png',
-  canonicalImage: 'https://alainpaluku.com/logo.png',
+  localImage: 'https://assets.alainpaluku.com/profil/alainpaluku.png',
+  canonicalImage: 'https://assets.alainpaluku.com/profil/alainpaluku.png',
   sameAs: [
     'https://linkedin.com/in/alainpaluku',
     'https://github.com/alainpaluku',

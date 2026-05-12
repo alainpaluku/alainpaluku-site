@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+const { alternateURL, t } = Astro.props;
+---
+<div class="flex md:hidden items-center gap-2">
+  <a href={alternateURL} class="flex items-center gap-1 px-2 text-muted-foreground hover:text-accent transition-colors" aria-label={t.languageLabel}>
+    <Icon name="globe" size="lg" />
+  </a>
+  <ThemeToggle id="theme-toggle-mobile" />
+  <button id="mobile-menu-btn" class="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Menu">
+    <Icon name="menu" size="lg" class="menu-icon-open" />
+    <Icon name="close" size="lg" class="hidden menu-icon-close" />
+  </button>
+</div>
