@@ -58,10 +58,11 @@ const currentPath = normalizePath(Astro.url.pathname);
 
         <a
           href={alternateURL}
-          class="text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
+          class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
           aria-label={t.languageLabel}
         >
-          {t.languageSwitch}
+          <Icon name="globe" size="sm" />
+          <span>{t.languageSwitch}</span>
         </a>
         <ThemeToggle id="theme-toggle" />
       </div>
@@ -70,10 +71,11 @@ const currentPath = normalizePath(Astro.url.pathname);
       <div class="flex md:hidden items-center gap-2">
         <a
           href={alternateURL}
-          class="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
+          class="flex items-center gap-1 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
           aria-label={t.languageLabel}
         >
-          {locale === "fr" ? "EN" : "FR"}
+          <Icon name="globe" size="sm" />
+          <span>{locale === "fr" ? "EN" : "FR"}</span>
         </a>
         <ThemeToggle id="theme-toggle-mobile" />
 
