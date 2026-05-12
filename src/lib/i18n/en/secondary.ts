@@ -1,6 +1,6 @@
 export const articles = {
   title: 'ARTICLES',
-  description: 'Articles on energy, industry, and automation.',
+  description: 'Explore technical articles on energy, industry, and automation by Alain Paluku.',
   searchPlaceholder: 'Search...',
   categories: 'Categories:',
   clearFilters: 'Clear filters',
@@ -17,7 +17,7 @@ export const articles = {
 
 export const contact = {
   title: 'CONTACT ME',
-  subtitle: 'For any concerns, feel free to contact me.',
+  subtitle: 'For any concerns or projects, feel free to contact me.',
   directContact: 'Direct contact',
   socialNetworks: 'Social networks',
   responseTimeTitle: 'Response time',
