@@ -165,8 +165,13 @@ const NAV_LINKS = getNavLinks(locale);
     showStatus,
     hideError,
   } from "../lib/form-validation-ui";
+  import { getLocaleFromPath, ui } from "../lib/i18n";
 
   initializeWithAstro(() => {
+    const locale = getLocaleFromPath(window.location.pathname);
+    const t = ui[locale].footer;
+    const v = ui[locale].validation;
+
     const form = document.getElementById("newsletter-form") as HTMLFormElement;
     const status = document.getElementById("newsletter-status");
     const submitBtn = form?.querySelector(
@@ -184,10 +189,10 @@ const NAV_LINKS = getNavLinks(locale);
 
     // Validation en temps réel
     nameInput?.addEventListener("blur", () =>
-      validateField(nameInput, nameError, 2, "Le prénom"),
+      validateField(nameInput, nameError, 2, t.firstName, v),
     );
     emailInput?.addEventListener("blur", () =>
-      validateEmailField(emailInput, emailError),
+      validateEmailField(emailInput, emailError, v),
     );
 
     form?.addEventListener("submit", async (e) => {
@@ -195,17 +200,17 @@ const NAV_LINKS = getNavLinks(locale);
 
       if (!submitBtn || !status) return;
 
-      const isNameValid = validateField(nameInput, nameError, 2, "Le prénom");
-      const isEmailValid = validateEmailField(emailInput, emailError);
+      const isNameValid = validateField(nameInput, nameError, 2, t.firstName, v);
+      const isEmailValid = validateEmailField(emailInput, emailError, v);
 
       if (!isNameValid || !isEmailValid) {
-        showStatus(status, "✗ Veuillez corriger les erreurs", false);
+        showStatus(status, t.validationError, false);
         return;
       }
 
       const originalContent = submitBtn.innerHTML;
       submitBtn.disabled = true;
-      submitBtn.innerHTML = "<span>Inscription...</span>";
+      submitBtn.innerHTML = `<span>${t.subscribing}</span>`;
 
       const formData = new FormData(form);
       const name = formData.get("name");
@@ -223,7 +228,7 @@ const NAV_LINKS = getNavLinks(locale);
         if (response.ok) {
           showStatus(
             status,
-            "✓ Inscription confirmée ! Merci de votre intérêt.",
+            t.subscribeSuccess,
             true,
           );
           form.reset();
@@ -234,11 +239,11 @@ const NAV_LINKS = getNavLinks(locale);
             status.classList.add("hidden");
           }, 5000);
         } else {
-          const errorMessage = result.error || "Erreur lors de l'inscription";
+          const errorMessage = result.error || t.subscribeError;
           showStatus(status, `✗ ${errorMessage}`, false);
         }
       } catch (error) {
-        showStatus(status, "✗ Erreur réseau. Vérifiez votre connexion.", false);
+        showStatus(status, t.networkError, false);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalContent;

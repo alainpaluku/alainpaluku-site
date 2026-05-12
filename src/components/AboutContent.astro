@@ -41,16 +41,13 @@ const expertise = profile.expertise[locale];
 
             <div class="text-center lg:text-left">
               <p class="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-accent">
-                {locale === 'fr' ? 'Profil professionnel' : 'Professional profile'}
+                {t.professionalProfile}
               </p>
               <h2 class="text-2xl sm:text-3xl font-bold text-foreground mb-2 uppercase font-serif">
                 {profile.name}
               </h2>
               <p class="text-base sm:text-lg text-muted-foreground uppercase tracking-wider mb-4">
                 {t.subtitle}
-              </p>
-              <p class="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
-                {t.intro}
               </p>
               <SocialLinks class="justify-center lg:justify-start" />
             </div>

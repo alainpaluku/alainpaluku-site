@@ -1,14 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getCollection, getEntry, render } from "astro:content";
-import ArticleCard from "../../components/ArticleCard.astro";
-import ResourceList from "../../components/ResourceList.astro";
-import Button from "../../components/Button.astro";
-import type { Resource } from "../../lib/types";
-import { ui } from "../../lib/i18n";
+import ArticleCard from "../../../components/ArticleCard.astro";
+import ResourceList from "../../../components/ResourceList.astro";
+import Button from "../../../components/Button.astro";
+import type { Resource } from "../../../lib/types";
+import { ui } from "../../../lib/i18n";
 
 export const prerender = true;
-
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -32,7 +31,7 @@ if (!post || post.data.draft) {
 
 const { Content } = await render(post);
 
-const locale = "fr";
+const locale = "en";
 const t = ui[locale].articles;
 
 // Get similar articles (same category, excluding current)
@@ -54,10 +53,10 @@ const similarPosts = allPosts
   image={post.data.image}
   keywords={[
     post.data.category,
-    "ingénierie électrique",
-    "réseaux électriques",
-    "automatisme industriel",
-    "énergies renouvelables",
+    "electrical engineering",
+    "power networks",
+    "industrial automation",
+    "renewable energy",
     ...post.data.title
       .toLowerCase()
       .split(" ")
@@ -69,7 +68,7 @@ const similarPosts = allPosts
       <div class="max-w-3xl mx-auto">
         <!-- Back link -->
         <Button
-          href="/articles/"
+          href="/en/articles/"
           variant="primary"
           icon="arrow-left"
           iconPosition="left"
@@ -102,7 +101,7 @@ const similarPosts = allPosts
             <div class="h-8 w-px bg-border mx-1"></div>
             <time class="text-sm text-muted-foreground font-mono">
               {
-                post.data.date.toLocaleDateString("fr-FR", {
+                post.data.date.toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -120,7 +119,7 @@ const similarPosts = allPosts
             post.data.image && (
               <img
                 src={post.data.image}
-                alt={`Illustration de l'article: ${post.data.title}`}
+                alt={`Article illustration: ${post.data.title}`}
                 width="768"
                 height="432"
                 loading="eager"
@@ -169,7 +168,7 @@ const similarPosts = allPosts
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto pt-8">
           <Button
-            href="/articles/"
+            href="/en/articles/"
             variant="primary"
             icon="arrow-left"
             iconPosition="left"
@@ -184,8 +183,8 @@ const similarPosts = allPosts
 </BaseLayout>
 
 <script>
-  import { enhanceCodeBlocks } from "../../scripts/code-blocks";
-  import { makeTablesResponsive } from "../../scripts/table-responsive";
+  import { enhanceCodeBlocks } from "../../../scripts/code-blocks";
+  import { makeTablesResponsive } from "../../../scripts/table-responsive";
 
   enhanceCodeBlocks();
   makeTablesResponsive();

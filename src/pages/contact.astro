@@ -278,8 +278,13 @@ const socialLinks = [
     showStatus,
     hideError,
   } from "../lib/form-validation-ui";
+  import { ui } from "../lib/i18n";
 
   initializeWithAstro(() => {
+    const locale = "fr";
+    const t = ui[locale].contact.form;
+    const v = ui[locale].validation;
+
     const form = document.getElementById("contact-form") as HTMLFormElement;
     const status = document.getElementById("form-status");
     const submitBtn = form?.querySelector(
@@ -301,16 +306,16 @@ const socialLinks = [
 
     // Validation en temps réel
     nameInput?.addEventListener("blur", () =>
-      validateField(nameInput, nameError, 2, "Le nom"),
+      validateField(nameInput, nameError, 2, t.nameLabel, v),
     );
     emailInput?.addEventListener("blur", () =>
-      validateEmailField(emailInput, emailError),
+      validateEmailField(emailInput, emailError, v),
     );
     subjectInput?.addEventListener("blur", () =>
-      validateField(subjectInput, subjectError, 3, "Le sujet"),
+      validateField(subjectInput, subjectError, 3, t.subjectLabel, v),
     );
     messageInput?.addEventListener("blur", () =>
-      validateField(messageInput, messageError, 10, "Le message"),
+      validateField(messageInput, messageError, 10, t.messageLabel, v),
     );
 
     form?.addEventListener("submit", async (e) => {
@@ -319,25 +324,27 @@ const socialLinks = [
       if (!submitBtn || !status) return;
 
       // Validation complète avant envoi
-      const isNameValid = validateField(nameInput, nameError, 2, "Le nom");
-      const isEmailValid = validateEmailField(emailInput, emailError);
+      const isNameValid = validateField(nameInput, nameError, 2, t.nameLabel, v);
+      const isEmailValid = validateEmailField(emailInput, emailError, v);
       const isSubjectValid = validateField(
         subjectInput,
         subjectError,
         3,
-        "Le sujet",
+        t.subjectLabel,
+        v
       );
       const isMessageValid = validateField(
         messageInput,
         messageError,
         10,
-        "Le message",
+        t.messageLabel,
+        v
       );
 
       if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
         showStatus(
           status,
-          "✗ Veuillez corriger les erreurs avant d'envoyer",
+          t.validationError,
           false,
         );
         return;
@@ -345,7 +352,7 @@ const socialLinks = [
 
       const originalContent = submitBtn.innerHTML;
       submitBtn.disabled = true;
-      submitBtn.innerHTML = "<span>Envoi en cours...</span>";
+      submitBtn.innerHTML = `<span>${t.sending}</span>`;
 
       const formData = new FormData(form);
       const data = {
@@ -365,7 +372,7 @@ const socialLinks = [
         const result = await response.json();
 
         if (response.ok) {
-          showStatus(status, "✓ Message envoyé avec succès !", true);
+          showStatus(status, t.success, true);
           form.reset();
           hideError(nameInput, nameError);
           hideError(emailInput, emailError);
@@ -376,13 +383,13 @@ const socialLinks = [
             status.classList.add("hidden");
           }, 5000);
         } else {
-          const errorMessage = result.error || "Erreur lors de l'envoi";
+          const errorMessage = result.error || t.error;
           showStatus(status, `✗ ${errorMessage}`, false);
         }
       } catch (error) {
         showStatus(
           status,
-          "✗ Erreur réseau. Vérifiez votre connexion et réessayez.",
+          t.networkError,
           false,
         );
       } finally {
