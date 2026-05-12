@@ -40,11 +40,6 @@ export const CONTACT_LINKS = [
     icon: "whatsapp",
   },
   {
-    href: "https://discord.com/users/YOURID",
-    label: "Discord",
-    icon: "discord",
-  },
-  {
     href: "mailto:contact@alainpaluku.com",
     label: "Email",
     icon: "email",
@@ -53,7 +48,7 @@ export const CONTACT_LINKS = [
 
 export const NAV_LINKS = [
   { href: "/", label: "Accueil", isContact: false },
-  { href: "/a-propos", label: "À Propos", isContact: false },
-  { href: "/articles", label: "Articles", isContact: false },
-  { href: "/contact", label: "Contact", isContact: true },
+  { href: "/a-propos/", label: "À Propos", isContact: false },
+  { href: "/articles/", label: "Articles", isContact: false },
+  { href: "/contact/", label: "Contact", isContact: true },
 ];

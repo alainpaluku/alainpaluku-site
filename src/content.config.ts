@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -10,16 +11,16 @@ const blog = defineCollection({
     date: z.coerce.date(),
     
     // ✅ OBLIGATOIRE - Images
-    image: z.string().url("L'image principale doit être une URL valide"),
-    images: z.array(z.string().url()).min(2, "Au moins 2 images secondaires sont requises"),
+    image: z.url("L'image principale doit être une URL valide"),
+    images: z.array(z.url()).min(2, "Au moins 2 images secondaires sont requises"),
     
     // ✅ OBLIGATOIRE - Auteur
     author: z.string().default('Alain Paluku'),
-    authorImage: z.string().url().default('https://assets.alainpaluku.com/profil/avatar.png'),
+    authorImage: z.url().default('https://assets.alainpaluku.com/profil/avatar.png'),
     
     // ✅ OBLIGATOIRE - Catégorie (une seule parmi les 3)
-    category: z.enum(['Énergie', 'Industrie', 'Automatisme'], {
-      errorMap: () => ({ message: "La catégorie doit être: Énergie, Industrie ou Automatisme" })
+    category: z.enum(['Énergie', 'Industrie', 'Automatisme'] as const, {
+      message: "La catégorie doit être: Énergie, Industrie ou Automatisme",
     }),
     
     // ✅ OBLIGATOIRE - Statut de publication
@@ -28,7 +29,7 @@ const blog = defineCollection({
     // ⚠️ OPTIONNEL - Ressources complémentaires
     resources: z.array(z.object({
       title: z.string(),
-      url: z.string().url(),
+      url: z.url(),
       type: z.enum(['code', 'documentation', 'materiel', 'article', 'video']),
     })).optional(),
   }),

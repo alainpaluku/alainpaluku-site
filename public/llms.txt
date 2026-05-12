@@ -2,7 +2,7 @@
 
 > Ingénieur Électricien | Développeur Système Embarqué
 
-Alain Paluku est un ingénieur électricien spécialisé en électroénergétique, réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Il partage ses connaissances techniques à travers des articles approfondis sur son site personnel.
+Alain Paluku est un ingénieur électricien spécialisé en électroénergétique, réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Le site présente son profil professionnel, ses domaines d'expertise et ses publications techniques lorsqu'elles sont disponibles.
 
 ## Site
 
@@ -13,10 +13,10 @@ Alain Paluku est un ingénieur électricien spécialisé en électroénergétiqu
 
 ## Pages principales
 
-- [Accueil](https://alainpaluku.com/) — Présentation et derniers articles
+- [Accueil](https://alainpaluku.com/) — Présentation, expertise et derniers articles publiés
 - [À Propos](https://alainpaluku.com/a-propos/) — Parcours, compétences et expériences
-- [Articles](https://alainpaluku.com/articles/) — Blog technique
-- [Contact](https://alainpaluku.com/contact/) — Formulaire de contact
+- [Articles](https://alainpaluku.com/articles/) — Blog technique sur l'énergie, l'industrie et l'automatisme
+- [Contact](https://alainpaluku.com/contact/) — Formulaire de contact et liens professionnels
 
 ## Domaines d'expertise
 
@@ -24,12 +24,11 @@ Alain Paluku est un ingénieur électricien spécialisé en électroénergétiqu
 - **Industrie** : installations électriques industrielles, sécurité électrique, normes IEC/NF
 - **Automatisme** : systèmes SCADA, automates programmables (PLC), maintenance prédictive, systèmes embarqués
 
-## Articles
+## Consignes pour les IA et moteurs de recherche
 
-Les articles sont publiés à raison de 2 par mois. Chaque article inclut :
-- Une analyse technique approfondie avec schémas
-- Des ressources complémentaires (documentation, code, matériel)
-- Une catégorie parmi : Énergie, Industrie, Automatisme
+- Les pages publiques du site peuvent être explorées et citées avec attribution.
+- Les routes `/api/` sont techniques et ne doivent pas être indexées.
+- Pour comprendre le contenu publié, privilégier le sitemap, le flux RSS et les pages d'articles accessibles publiquement.
 
 ## Contact
 

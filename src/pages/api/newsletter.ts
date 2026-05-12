@@ -5,6 +5,7 @@ import { getNewsletterWelcomeEmailTemplate } from "../../lib/email-templates";
 import { resendClient, RESEND_CONFIG } from "../../lib/resend-client";
 import { logger } from "../../lib/logger";
 import { checkRateLimit, getClientIP } from "../../lib/rate-limit";
+import type { NewsletterFormData } from "../../lib/types";
 
 export const prerender = false;
 
@@ -51,8 +52,9 @@ export const POST: APIRoute = async ({ request }) => {
       return createErrorResponse(validation.errors[0], 400);
     }
 
-    const name = sanitizeInput(body.name);
-    const email = sanitizeInput(body.email);
+    const newsletterData = body as NewsletterFormData;
+    const name = sanitizeInput(newsletterData.name);
+    const email = sanitizeInput(newsletterData.email);
 
     // Ajouter le contact à l'audience Resend si configuré
     if (RESEND_CONFIG.audienceId) {

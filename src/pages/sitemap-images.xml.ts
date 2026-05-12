@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getSortedArticles, buildImageUrl, SITE_URL, XML_HEADERS } from '../lib/sitemap-utils';
+import { getSortedArticles, buildImageUrl, escapeXml, SITE_URL, XML_HEADERS } from '../lib/sitemap-utils';
 
 
 export const GET: APIRoute = async () => {
@@ -24,14 +24,14 @@ ${articles.map(article => {
   if (allImages.length === 0) return '';
   
   return `  <url>
-    <loc>${SITE_URL}/articles/${article.slug}</loc>
+    <loc>${SITE_URL}/articles/${article.id}/</loc>
     <lastmod>${article.data.date.toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
 ${allImages.map((img, i) => `    <image:image>
-      <image:loc>${buildImageUrl(img)}</image:loc>
-      <image:title>${article.data.title}${i > 0 ? ` - Image ${i}` : ''}</image:title>
-      <image:caption>${article.data.description}</image:caption>
+      <image:loc>${escapeXml(buildImageUrl(img))}</image:loc>
+      <image:title>${escapeXml(article.data.title)}${i > 0 ? ` - Image ${i}` : ''}</image:title>
+      <image:caption>${escapeXml(article.data.description)}</image:caption>
     </image:image>`).join('\n')}
   </url>`;
 }).filter(Boolean).join('\n')}

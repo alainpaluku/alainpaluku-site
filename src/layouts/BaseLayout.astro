@@ -10,6 +10,7 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   publishedTime?: string;
+  modifiedTime?: string;
   author?: string;
   keywords?: string[];
 }
@@ -20,6 +21,7 @@ const {
   image = "https://assets.alainpaluku.com/profil/alainpaluku.png",
   type = "website",
   publishedTime,
+  modifiedTime,
   author = "Alain Paluku",
   keywords = [
     "ingénieur électricien",
@@ -36,6 +38,67 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteTitle = "Alain Paluku - Ingénieur Électricien";
 const fullTitle = `${title} | ${siteTitle}`;
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
+const googleAnalyticsId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+
+const personStructuredData = {
+  "@type": "Person",
+  "@id": `${Astro.site}#person`,
+  name: "Alain Paluku",
+  jobTitle: "Ingénieur Électricien",
+  description,
+  url: Astro.site?.toString(),
+  image,
+  sameAs: [
+    "https://linkedin.com/in/alainpaluku",
+    "https://github.com/alainpaluku",
+    "https://medium.com/@alainpaluku",
+    "https://huggingface.co/alainpaluku",
+  ],
+  knowsAbout: [
+    "Réseaux électriques BT, MT, HT",
+    "Énergies renouvelables",
+    "Centrales hydrauliques",
+    "Systèmes photovoltaïques",
+    "Automatisme industriel",
+    "Systèmes SCADA",
+    "Maintenance prédictive",
+    "IoT industriel",
+    "Installations électriques industrielles",
+  ],
+  alumniOf: {
+    "@type": "EducationalOrganization",
+    name: "Université Catholique la Sapientia",
+  },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    personStructuredData,
+    type === "article"
+      ? {
+          "@type": "BlogPosting",
+          headline: title,
+          description,
+          image,
+          datePublished: publishedTime,
+          dateModified: modifiedTime || publishedTime,
+          author: { "@id": `${Astro.site}#person` },
+          publisher: { "@id": `${Astro.site}#person` },
+          mainEntityOfPage: canonicalURL.toString(),
+          inLanguage: "fr-FR",
+        }
+      : {
+          "@type": "WebSite",
+          name: siteTitle,
+          url: Astro.site?.toString(),
+          inLanguage: "fr-FR",
+          publisher: { "@id": `${Astro.site}#person` },
+        },
+  ],
+};
 ---
 
 <!doctype html>
@@ -66,7 +129,7 @@ const fullTitle = `${title} | ${siteTitle}`;
         <meta property="article:published_time" content={publishedTime} />
       )
     }
-    {author && <meta property="article:author" content={author} />}
+    {type === "article" && author && <meta property="article:author" content={author} />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -75,39 +138,13 @@ const fullTitle = `${title} | ${siteTitle}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
 
-    <!-- Structured Data for GEO -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Structured Data for SEO/GEO -->
     <script
+      is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: "Alain Paluku",
-        jobTitle: "Ingénieur Électricien",
-        description: description,
-        url: canonicalURL.toString(),
-        image: image,
-        sameAs: [
-          "https://linkedin.com/in/alainpaluku",
-          "https://github.com/alainpaluku",
-          "https://medium.com/@alainpaluku",
-          "https://huggingface.co/alainpaluku",
-        ],
-        knowsAbout: [
-          "Réseaux électriques BT, MT, HT",
-          "Énergies renouvelables",
-          "Centrales hydrauliques",
-          "Systèmes photovoltaïques",
-          "Automatisme industriel",
-          "Systèmes SCADA",
-          "Maintenance prédictive",
-          "IoT industriel",
-          "Installations électriques industrielles",
-        ],
-        alumniOf: {
-          "@type": "EducationalOrganization",
-          name: "Université Catholique la Sapientia",
-        },
-      })}
+      set:html={JSON.stringify(structuredData)}
     />
 
     <!-- Favicon -->
@@ -130,35 +167,19 @@ const fullTitle = `${title} | ${siteTitle}`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://assets.alainpaluku.com" />
 
-    <!-- Fonts - Optimisé pour la performance -->
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
     />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
 
-    <!-- KaTeX - Chargement différé -->
+    <!-- KaTeX -->
     <link
-      rel="preload"
+      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+      integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+      crossorigin="anonymous"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-        integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
-        crossorigin="anonymous"
-      />
-    </noscript>
 
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
@@ -166,31 +187,31 @@ const fullTitle = `${title} | ${siteTitle}`;
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <!-- SEO Verification Tags -->
-    <!-- Google Search Console - Remplacez par votre code -->
-    <meta name="google-site-verification" content="VOTRE_CODE_GOOGLE_ICI" />
+    {googleVerification && (
+      <meta name="google-site-verification" content={googleVerification} />
+    )}
+    {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
 
-    <!-- Bing Webmaster - Remplacez par votre code -->
-    <meta name="msvalidate.01" content="VOTRE_CODE_BING_ICI" />
-
-    <!-- Google Analytics - Chargement différé -->
-    <script is:inline>
-      window.addEventListener("load", function () {
-        setTimeout(function () {
-          var script = document.createElement("script");
-          script.async = true;
-          script.src =
-            "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
-          document.head.appendChild(script);
-
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-          gtag("config", "G-XXXXXXXXXX");
-        }, 3000);
-      });
-    </script>
+    <!-- Google Analytics - optionnel via PUBLIC_GOOGLE_ANALYTICS_ID -->
+    {
+      googleAnalyticsId && (
+        <>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+          />
+          <script is:inline define:vars={{ googleAnalyticsId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", googleAnalyticsId);
+          </script>
+        </>
+      )
+    }
 
     <!-- Theme Script -->
     <script is:inline>

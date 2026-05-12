@@ -37,13 +37,13 @@ self.addEventListener('fetch', (event) => {
     // Cache First pour les images et assets
     if (url.pathname.match(/\.(png|jpg|jpeg|svg|webp|woff2|css|js)$/)) {
         event.respondWith(
-            caches.match(event.request).then((response) => {
-                return response || fetch(event.request).then((fetchResponse) => {
-                    return caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, fetchResponse.clone());
-                        return fetchResponse;
-                    });
-                });
+            caches.match(event.request).then(async (response) => {
+                if (response) return response;
+
+                const fetchResponse = await fetch(event.request);
+                const cache = await caches.open(CACHE_NAME);
+                cache.put(event.request, fetchResponse.clone());
+                return fetchResponse;
             })
         );
     } else {

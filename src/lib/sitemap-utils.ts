@@ -15,3 +15,13 @@ export async function getSortedArticles() {
 export function buildImageUrl(img: string): string {
   return img.startsWith('http') ? img : `${SITE_URL}${img}`;
 }
+
+
+export function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
