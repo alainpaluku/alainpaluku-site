@@ -34,13 +34,9 @@ const COLORS = {
   footerBg: '#e8e9ed', // Couleur plus claire pour le footer
 };
 
-// URLs des assets
-const ASSETS = {
-  avatar: 'https://assets.alainpaluku.com/profil/avatar.png',
-  linkedin: 'https://assets.alainpaluku.com/profil/incon-mails/linkedin-circle.png',
-  github: 'https://assets.alainpaluku.com/profil/incon-mails/github.png',
-  medium: 'https://assets.alainpaluku.com/profil/incon-mails/medium.png',
-};
+const SITE_URL = 'https://alainpaluku.com';
+const AVATAR_URL = `${SITE_URL}/logo.png`;
+
 
 
 function escapeHtml(value: string): string {
@@ -59,9 +55,8 @@ function createEmailLayout(content: string): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Nunito', sans-serif; background-color: ${COLORS.background};">
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: ${COLORS.background};">
   <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: ${COLORS.background};">
     <tr>
       <td align="center" style="padding: 20px 0;">
@@ -81,7 +76,7 @@ function createEmailHeader(): string {
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
       <tr>
         <td width="60" style="vertical-align: middle;">
-          <img src="${ASSETS.avatar}" alt="Alain Paluku" width="60" height="60" style="display: block; border-radius: 50%; border: 0;" />
+          <img src="${AVATAR_URL}" alt="Alain Paluku" width="60" height="60" style="display: block; border-radius: 50%; border: 0;" />
         </td>
         <td style="vertical-align: middle; padding-left: 16px;">
           <p style="margin: 0 0 2px 0; font-size: 16px; font-weight: 700; color: ${COLORS.foreground}; line-height: 1.2; letter-spacing: 0.3px;">ALAIN PALUKU</p>
@@ -108,13 +103,11 @@ function createEmailFooter(includeUnsubscribe: boolean = false): string {
   <td style="background-color: ${COLORS.footerBg}; padding: 28px; text-align: center;">
     <p style="margin: 0 0 18px 0; font-size: 15px; font-weight: 700; color: ${COLORS.foreground};">ALAIN PALUKU</p>
     
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-      <tr><td align="center">
-        <a href="https://linkedin.com/in/alainpaluku" style="display: inline-block; margin: 0 8px;"><img src="${ASSETS.linkedin}" alt="LinkedIn" width="28" height="28" style="display: block; opacity: 0.7; border: 0;" /></a>
-        <a href="https://github.com/alainpaluku" style="display: inline-block; margin: 0 8px;"><img src="${ASSETS.github}" alt="GitHub" width="28" height="28" style="display: block; opacity: 0.7; border: 0;" /></a>
-        <a href="https://medium.com/@alainpaluku" style="display: inline-block; margin: 0 8px;"><img src="${ASSETS.medium}" alt="Medium" width="28" height="28" style="display: block; opacity: 0.7; border: 0;" /></a>
-      </td></tr>
-    </table>
+    <p style="margin: 0; font-size: 12px; color: ${COLORS.mutedForeground};">
+      <a href="https://linkedin.com/in/alainpaluku" style="color: ${COLORS.accent}; text-decoration: none; margin: 0 8px;">LinkedIn</a>
+      <a href="https://github.com/alainpaluku" style="color: ${COLORS.accent}; text-decoration: none; margin: 0 8px;">GitHub</a>
+      <a href="https://medium.com/@alainpaluku" style="color: ${COLORS.accent}; text-decoration: none; margin: 0 8px;">Medium</a>
+    </p>
   </td>
 </tr>${unsubscribeSection}`;
 }

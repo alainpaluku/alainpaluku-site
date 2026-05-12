@@ -16,7 +16,7 @@ const blog = defineCollection({
     
     // ✅ OBLIGATOIRE - Auteur
     author: z.string().default('Alain Paluku'),
-    authorImage: z.url().default('https://assets.alainpaluku.com/profil/avatar.png'),
+    authorImage: z.url().default('https://alainpaluku.com/logo.png'),
     
     // ✅ OBLIGATOIRE - Catégorie (une seule parmi les 3)
     category: z.enum(['Énergie', 'Industrie', 'Automatisme'] as const, {

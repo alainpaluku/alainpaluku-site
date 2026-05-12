@@ -2,13 +2,23 @@
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
-import { NAV_LINKS } from "../lib/constants";
+import { getNavLinks } from "../lib/constants";
+import { getLocaleFromPath, ui, type Locale } from "../lib/i18n";
 
 const normalizePath = (path: string) => {
   if (path === "/") return path;
   return path.endsWith("/") ? path : `${path}/`;
 };
 
+interface Props {
+  locale?: Locale;
+  alternateURL?: string;
+}
+
+const { locale: explicitLocale, alternateURL } = Astro.props;
+const locale = explicitLocale ?? getLocaleFromPath(Astro.url.pathname);
+const t = ui[locale];
+const NAV_LINKS = getNavLinks(locale);
 const currentPath = normalizePath(Astro.url.pathname);
 ---
 
@@ -18,7 +28,7 @@ const currentPath = normalizePath(Astro.url.pathname);
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="hover:opacity-80 transition-opacity">
+      <a href={NAV_LINKS[0].href} class="hover:opacity-80 transition-opacity">
         <Logo size="md" />
       </a>
 
@@ -46,11 +56,25 @@ const currentPath = normalizePath(Astro.url.pathname);
           }
         </ul>
 
+        <a
+          href={alternateURL}
+          class="text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
+          aria-label={t.languageLabel}
+        >
+          {t.languageSwitch}
+        </a>
         <ThemeToggle id="theme-toggle" />
       </div>
 
       <!-- Mobile: Theme Toggle + Menu Button -->
       <div class="flex md:hidden items-center gap-2">
+        <a
+          href={alternateURL}
+          class="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-accent transition-colors"
+          aria-label={t.languageLabel}
+        >
+          {locale === "fr" ? "EN" : "FR"}
+        </a>
         <ThemeToggle id="theme-toggle-mobile" />
 
         <button

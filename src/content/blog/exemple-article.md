@@ -2,12 +2,12 @@
 title: "Exemple de brouillon pour publier un article technique"
 description: "Brouillon modèle pour préparer un article technique complet avant publication publique sur le blog professionnel."
 date: 2026-01-01
-image: "https://assets.alainpaluku.com/profil/alainpaluku.png"
+image: "https://alainpaluku.com/logo.png"
 images:
-  - "https://assets.alainpaluku.com/profil/alainpaluku.png"
-  - "https://assets.alainpaluku.com/profil/avatar.png"
+  - "https://alainpaluku.com/logo.png"
+  - "https://alainpaluku.com/logo.png"
 author: "Alain Paluku"
-authorImage: "https://assets.alainpaluku.com/profil/avatar.png"
+authorImage: "https://alainpaluku.com/logo.png"
 category: "Énergie"
 draft: true
 resources:

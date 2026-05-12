@@ -3,6 +3,8 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import ScrollToTop from "../components/ScrollToTop.astro";
+import { getAlternatePath, getLocaleFromPath, localeNames, ui, type Locale } from "../lib/i18n";
+import { profile } from "../lib/profile";
 
 interface Props {
   title: string;
@@ -13,50 +15,45 @@ interface Props {
   modifiedTime?: string;
   author?: string;
   keywords?: string[];
+  locale?: Locale;
 }
 
 const {
   title,
-  description = "Ingénieur Électricien spécialisé en réseaux électriques, énergies renouvelables et automatisme industriel. Expertise en dimensionnement de centrales hydrauliques et photovoltaïques, installations électriques industrielles et systèmes de monitoring.",
-  image = "https://assets.alainpaluku.com/profil/alainpaluku.png",
+  description,
+  image = profile.canonicalImage,
   type = "website",
   publishedTime,
   modifiedTime,
   author = "Alain Paluku",
-  keywords = [
-    "ingénieur électricien",
-    "réseaux électriques",
-    "énergies renouvelables",
-    "automatisme industriel",
-    "SCADA",
-    "maintenance prédictive",
-    "centrales hydrauliques",
-    "photovoltaïque",
-  ],
+  keywords = profile.keywords,
+  locale: explicitLocale,
 } = Astro.props;
 
+const locale = explicitLocale ?? getLocaleFromPath(Astro.url.pathname);
+const t = ui[locale];
+const alternateLocale: Locale = locale === "fr" ? "en" : "fr";
+const alternateURL = new URL(getAlternatePath(Astro.url.pathname, alternateLocale), Astro.site);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const siteTitle = "Alain Paluku - Ingénieur Électricien";
+const pageDescription = description ?? t.defaultDescription;
+const siteTitle = t.siteTitle;
 const fullTitle = `${title} | ${siteTitle}`;
 const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
-const googleAnalyticsId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
 
 const personStructuredData = {
   "@type": "Person",
   "@id": `${Astro.site}#person`,
-  name: "Alain Paluku",
-  jobTitle: "Ingénieur Électricien",
-  description,
+  name: profile.name,
+  alternateName: ["ALAIN PALUK", "Alain Paluk"],
+  jobTitle: locale === "fr" ? "Ingénieur Électricien" : "Electrical Engineer",
+  description: pageDescription,
   url: Astro.site?.toString(),
   image,
-  sameAs: [
-    "https://linkedin.com/in/alainpaluku",
-    "https://github.com/alainpaluku",
-    "https://medium.com/@alainpaluku",
-    "https://huggingface.co/alainpaluku",
-  ],
+  sameAs: profile.sameAs,
   knowsAbout: [
+    "Alain Paluku",
+    "ALAIN PALUK",
     "Réseaux électriques BT, MT, HT",
     "Énergies renouvelables",
     "Centrales hydrauliques",
@@ -81,20 +78,20 @@ const structuredData = {
       ? {
           "@type": "BlogPosting",
           headline: title,
-          description,
+          description: pageDescription,
           image,
           datePublished: publishedTime,
           dateModified: modifiedTime || publishedTime,
           author: { "@id": `${Astro.site}#person` },
           publisher: { "@id": `${Astro.site}#person` },
           mainEntityOfPage: canonicalURL.toString(),
-          inLanguage: "fr-FR",
+          inLanguage: localeNames[locale],
         }
       : {
           "@type": "WebSite",
           name: siteTitle,
           url: Astro.site?.toString(),
-          inLanguage: "fr-FR",
+          inLanguage: localeNames[locale],
           publisher: { "@id": `${Astro.site}#person` },
         },
   ],
@@ -102,7 +99,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -110,19 +107,22 @@ const structuredData = {
     <!-- Primary Meta Tags -->
     <title>{fullTitle}</title>
     <meta name="title" content={fullTitle} />
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <meta name="keywords" content={keywords.join(", ")} />
     <meta name="author" content={author} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="fr" href={new URL(getAlternatePath(Astro.url.pathname, "fr"), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(getAlternatePath(Astro.url.pathname, "en"), Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(getAlternatePath(Astro.url.pathname, "fr"), Astro.site)} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={image} />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={locale === "fr" ? "fr_FR" : "en_US"} />
     <meta property="og:site_name" content={siteTitle} />
     {
       publishedTime && (
@@ -135,7 +135,7 @@ const structuredData = {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={image} />
 
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -162,24 +162,7 @@ const structuredData = {
     <meta name="apple-mobile-web-app-title" content="Alain Paluku" />
     <meta name="theme-color" content="#c0caf5" />
 
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://assets.alainpaluku.com" />
-
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- KaTeX -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-      integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
-      crossorigin="anonymous"
-    />
+    <!-- Typography uses system fonts; third-party stylesheet and script providers are intentionally avoided. -->
 
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
@@ -192,26 +175,7 @@ const structuredData = {
     )}
     {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
 
-    <!-- Google Analytics - optionnel via PUBLIC_GOOGLE_ANALYTICS_ID -->
-    {
-      googleAnalyticsId && (
-        <>
-          <script
-            is:inline
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
-          />
-          <script is:inline define:vars={{ googleAnalyticsId }}>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-              dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-            gtag("config", googleAnalyticsId);
-          </script>
-        </>
-      )
-    }
+    <!-- Analytics intentionally omitted to avoid third-party scripts and improve privacy/performance. -->
 
     <!-- Theme Script -->
     <script is:inline>
@@ -269,11 +233,11 @@ const structuredData = {
     </script>
   </head>
   <body class="min-h-screen flex flex-col font-sans">
-    <Header />
+    <Header locale={locale} alternateURL={alternateURL.pathname} />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
     <ScrollToTop />
   </body>
 </html>
