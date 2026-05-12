@@ -88,18 +88,6 @@ const similarPosts = allPosts
 
           <!-- Author -->
           <div class="flex items-center gap-3 mb-6">
-            <img
-              src={post.data.authorImage}
-              alt={post.data.author}
-              class="w-12 h-12 rounded-full object-cover border-2 border-border"
-            />
-            <div>
-              <p class="text-sm font-medium text-foreground uppercase">
-                {post.data.author}
-              </p>
-              <p class="text-xs text-muted-foreground">{t.author}</p>
-            </div>
-            <div class="h-8 w-px bg-border mx-1"></div>
             <time class="text-sm text-muted-foreground font-mono">
               {
                 post.data.date.toLocaleDateString("fr-FR", {

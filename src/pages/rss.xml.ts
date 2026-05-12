@@ -8,7 +8,7 @@ export const GET: APIRoute = async (context) => {
 
   return rss({
     title: 'Alain Paluku - Blog Technique',
-    description: "Articles techniques sur l'énergie, l'industrie et l'automatisme par Alain Paluku, ingénieur électricien.",
+    description: "Articles techniques sur l'énergie, l'industrie et l'automatisme.",
     site: context.site || SITE_URL,
     items: articles.map((article) => ({
       title: article.data.title,

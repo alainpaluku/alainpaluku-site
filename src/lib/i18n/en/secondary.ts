@@ -1,6 +1,6 @@
 export const articles = {
   title: 'ARTICLES',
-  description: 'Explore technical articles on energy, industry, and automation by Alain Paluku.',
+  description: 'Explore technical articles on energy, industry, and automation.',
   searchPlaceholder: 'Search...',
   categories: 'Categories:',
   clearFilters: 'Clear filters',
