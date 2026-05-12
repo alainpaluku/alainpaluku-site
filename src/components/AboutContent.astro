@@ -1,0 +1,117 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import Button from './Button.astro';
+import { getLocalizedPath, ui, type Locale } from '../lib/i18n';
+import { profile } from '../lib/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale].about;
+const education = profile.education[locale];
+const expertise = profile.expertise[locale];
+---
+
+<section class="py-16 sm:py-24">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-12 sm:mb-16 text-center">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground font-serif">
+          {t.title}
+        </h1>
+      </div>
+
+      <div class="mb-16 sm:mb-20">
+        <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+          <div class="grid lg:grid-cols-2 gap-8 items-center">
+            <div class="flex justify-center lg:justify-start">
+              <img
+                src={profile.localImage}
+                alt={`${profile.name} - ${t.subtitle}`}
+                width="224"
+                height="224"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                class="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-3xl bg-background/60 border border-border p-4"
+              />
+            </div>
+
+            <div class="text-center lg:text-left">
+              <p class="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-accent">
+                {locale === 'fr' ? 'Profil professionnel' : 'Professional profile'}
+              </p>
+              <h2 class="text-2xl sm:text-3xl font-bold text-foreground mb-2 uppercase font-serif">
+                {profile.name}
+              </h2>
+              <p class="text-base sm:text-lg text-muted-foreground uppercase tracking-wider mb-4">
+                {t.subtitle}
+              </p>
+              <p class="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
+                {t.intro}
+              </p>
+              <SocialLinks class="justify-center lg:justify-start" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-16 sm:mb-20">
+        <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+          <h2 class="text-2xl sm:text-3xl font-semibold text-foreground mb-6 sm:mb-8 font-serif">
+            {t.education}
+          </h2>
+          <div class="space-y-6">
+            {education.map((item) => (
+              <div>
+                <div class="flex justify-between items-start gap-4 mb-1">
+                  <h3 class="text-base sm:text-lg font-semibold text-foreground">{item.degree}</h3>
+                  <span class="text-sm text-muted-foreground whitespace-nowrap">{item.period}</span>
+                </div>
+                <p class="text-sm sm:text-base text-muted-foreground">{item.school}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-16 sm:mb-20">
+        <div class="p-6 sm:p-8 rounded-xl bg-muted/20 border border-border">
+          <h2 class="text-2xl sm:text-3xl font-semibold text-foreground mb-6 sm:mb-8 font-serif">
+            {t.expertise}
+          </h2>
+          <div class="space-y-8">
+            {expertise.map((area) => (
+              <div>
+                <h3 class="text-base sm:text-lg font-semibold text-foreground mb-3">{area.title}</h3>
+                <ul class="space-y-2 text-sm sm:text-base text-muted-foreground">
+                  {area.items.map((item) => <li>• {item}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6 mb-16 sm:mb-20">
+        <div class="p-6 sm:p-8 rounded-xl bg-accent/5 border border-accent/20 text-center">
+          <h3 class="text-lg sm:text-xl font-semibold text-foreground mb-3 font-serif">{t.articles}</h3>
+          <p class="text-sm text-muted-foreground mb-6">{t.articlesText}</p>
+          <Button href={getLocalizedPath('articles', locale)} variant="secondary" icon="arrow" class="px-6 py-3 text-sm">
+            {t.readArticles}
+          </Button>
+        </div>
+
+        <div class="p-6 sm:p-8 lg:p-10 rounded-xl bg-accent/5 border border-accent/20 text-center">
+          <h3 class="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4 font-serif">{t.workTogether}</h3>
+          <p class="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">{t.workText}</p>
+          <Button href={getLocalizedPath('contact', locale)} variant="primary" icon="arrow" class="px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base">
+            {t.contact}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

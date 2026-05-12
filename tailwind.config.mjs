@@ -14,9 +14,9 @@ export default {
         'accent-foreground': 'rgb(var(--color-accent-foreground) / <alpha-value>)',
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        serif: ['Poppins', 'sans-serif'],
-        sans: ['Nunito', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        serif: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
     },
   },

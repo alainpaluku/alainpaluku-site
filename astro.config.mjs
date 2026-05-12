@@ -23,6 +23,10 @@ export default defineConfig({
         'https://alainpaluku.com/articles/',
         'https://alainpaluku.com/a-propos/',
         'https://alainpaluku.com/contact/',
+        'https://alainpaluku.com/en/',
+        'https://alainpaluku.com/en/about/',
+        'https://alainpaluku.com/en/articles/',
+        'https://alainpaluku.com/en/contact/',
       ],
       serialize(item) {
         const { pathname } = new URL(item.url);
@@ -48,6 +52,7 @@ export default defineConfig({
         defaultLocale: 'fr',
         locales: {
           fr: 'fr-FR',
+          en: 'en-US',
         },
       },
     }),

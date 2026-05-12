@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AboutContent from '../../../components/AboutContent.astro';
+import { profile } from '../../../lib/profile';
+import { ui } from '../../../lib/i18n';
+---
+
+<BaseLayout
+  title={ui.en.about.title}
+  locale="en"
+  description={ui.en.defaultDescription}
+  keywords={profile.keywords}
+>
+  <AboutContent locale="en" />
+</BaseLayout>

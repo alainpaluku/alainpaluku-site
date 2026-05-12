@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import SocialLinks from './SocialLinks.astro';
+import Button from './Button.astro';
+import { getLocalizedPath, ui, type Locale } from '../lib/i18n';
+import { profile } from '../lib/profile';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale].home;
+const articles = (await getCollection('blog'))
+  .filter((article) => !article.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
+---
+
+<section class="py-16 sm:py-24">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div class="order-2 lg:order-1 flex flex-col justify-center">
+          <p class="mb-3 font-mono text-sm uppercase tracking-[0.25em] text-accent">
+            {locale === 'fr' ? 'Portfolio officiel' : 'Official portfolio'}
+          </p>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4 tracking-tight uppercase">
+            {t.headline}
+          </h1>
+          <h2 class="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 uppercase tracking-wider">
+            {t.subtitle}
+          </h2>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <Button href={getLocalizedPath('contact', locale)} variant="primary" icon="arrow" class="px-8 py-4">
+              {t.contact}
+            </Button>
+            <Button href={getLocalizedPath('about', locale)} variant="secondary" class="px-8 py-4">
+              {t.about}
+            </Button>
+          </div>
+          <SocialLinks variant="compact" class="mt-6 justify-center sm:justify-start" />
+        </div>
+
+        <div class="order-1 lg:order-2 flex justify-center">
+          <img
+            src={profile.localImage}
+            alt={`${profile.name} - ${t.subtitle}`}
+            width="224"
+            height="224"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-3xl bg-muted/20 border border-border p-4"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 sm:py-20 border-t border-border">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl font-semibold text-foreground mb-8 sm:mb-12">
+        {t.recentArticles}
+      </h2>
+
+      {articles.length > 0 ? (
+        <>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {articles.map((post) => <ArticleCard post={post} />)}
+          </div>
+          <div class="mt-8 text-center">
+            <Button href={getLocalizedPath('articles', locale)} variant="secondary" icon="arrow">
+              {t.more}
+            </Button>
+          </div>
+        </>
+      ) : (
+        <div class="text-center py-12 border border-dashed border-border rounded-xl">
+          <p class="font-mono text-sm text-muted-foreground mb-2">{t.preparing}</p>
+          <p class="text-sm text-muted-foreground">{t.preparingText}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

@@ -2,7 +2,7 @@
 
 > Ingénieur Électricien | Développeur Système Embarqué
 
-Alain Paluku est un ingénieur électricien spécialisé en électroénergétique, réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Le site présente son profil professionnel, ses domaines d'expertise et ses publications techniques lorsqu'elles sont disponibles.
+Alain Paluku, aussi recherché comme ALAIN PALUK ou Alain Paluk, est un ingénieur électricien spécialisé en électroénergétique, réseaux électriques BT/MT/HT, énergies renouvelables et automatisme industriel. Le site présente son profil professionnel, ses domaines d'expertise et ses publications techniques lorsqu'elles sont disponibles.
 
 ## Site
 
@@ -17,6 +17,8 @@ Alain Paluku est un ingénieur électricien spécialisé en électroénergétiqu
 - [À Propos](https://alainpaluku.com/a-propos/) — Parcours, compétences et expériences
 - [Articles](https://alainpaluku.com/articles/) — Blog technique sur l'énergie, l'industrie et l'automatisme
 - [Contact](https://alainpaluku.com/contact/) — Formulaire de contact et liens professionnels
+- [Home EN](https://alainpaluku.com/en/) — English overview and expertise
+- [About EN](https://alainpaluku.com/en/about/) — English profile, education and skills
 
 ## Domaines d'expertise
 
