@@ -25,28 +25,23 @@ export default defineConfig({
         'https://alainpaluku.com/contact/',
       ],
       serialize(item) {
+        const { pathname } = new URL(item.url);
+
         // Priorités personnalisées par type de page
-        if (item.url.endsWith('/')) {
-          // Page d'accueil
+        if (pathname === '/') {
           item.priority = 1.0;
-          item.changefreq = 'daily';
-        } else if (item.url.includes('/articles/') && !item.url.endsWith('/articles/')) {
-          // Articles individuels
+          item.changefreq = 'weekly';
+        } else if (pathname.startsWith('/articles/') && pathname !== '/articles/') {
           item.priority = 0.9;
           item.changefreq = 'monthly';
-        } else if (item.url.includes('/articles/categorie/')) {
-          // Pages de catégories
-          item.priority = 0.8;
-          item.changefreq = 'weekly';
-        } else if (item.url.includes('/articles/')) {
-          // Page liste articles
+        } else if (pathname === '/articles/') {
           item.priority = 0.85;
           item.changefreq = 'weekly';
         } else {
-          // Autres pages (à propos, contact)
           item.priority = 0.7;
           item.changefreq = 'monthly';
         }
+
         return item;
       },
       i18n: {

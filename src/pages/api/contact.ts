@@ -6,6 +6,7 @@ import { resendClient, RESEND_CONFIG } from "../../lib/resend-client";
 import { formatDateGMT2 } from "../../lib/date-utils";
 import { logger } from "../../lib/logger";
 import { checkRateLimit, getClientIP } from "../../lib/rate-limit";
+import type { ContactFormData } from "../../lib/types";
 
 export const prerender = false;
 
@@ -52,10 +53,11 @@ export const POST: APIRoute = async ({ request }) => {
       return createErrorResponse(validation.errors[0], 400);
     }
 
-    const name = sanitizeInput(body.name);
-    const email = sanitizeInput(body.email);
-    const subject = sanitizeInput(body.subject);
-    const message = sanitizeInput(body.message);
+    const contactData = body as ContactFormData;
+    const name = sanitizeInput(contactData.name);
+    const email = sanitizeInput(contactData.email);
+    const subject = sanitizeInput(contactData.subject);
+    const message = sanitizeInput(contactData.message);
 
     const { dateFormatted, timeFormatted } = formatDateGMT2();
 

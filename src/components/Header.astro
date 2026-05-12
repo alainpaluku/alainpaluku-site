@@ -2,9 +2,14 @@
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
-import { NAV_LINKS, SITE_CONFIG } from "../lib/constants";
+import { NAV_LINKS } from "../lib/constants";
 
-const currentPath = Astro.url.pathname;
+const normalizePath = (path: string) => {
+  if (path === "/") return path;
+  return path.endsWith("/") ? path : `${path}/`;
+};
+
+const currentPath = normalizePath(Astro.url.pathname);
 ---
 
 <header
@@ -29,7 +34,7 @@ const currentPath = Astro.url.pathname;
                     "text-sm font-medium transition-colors",
                     link.isContact
                       ? "px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:opacity-90"
-                      : currentPath === link.href
+                      : currentPath === normalizePath(link.href)
                         ? "text-accent"
                         : "text-muted-foreground hover:text-accent",
                   ]}
@@ -71,7 +76,7 @@ const currentPath = Astro.url.pathname;
                   "block py-2 text-sm font-medium transition-colors",
                   link.isContact
                     ? "px-4 py-2 rounded-lg bg-accent text-accent-foreground hover:opacity-90 text-center"
-                    : currentPath === link.href
+                    : currentPath === normalizePath(link.href)
                       ? "text-accent"
                       : "text-muted-foreground hover:text-accent",
                 ]}

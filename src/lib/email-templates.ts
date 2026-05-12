@@ -42,6 +42,16 @@ const ASSETS = {
   medium: 'https://assets.alainpaluku.com/profil/incon-mails/medium.png',
 };
 
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function createEmailLayout(content: string): string {
   return `<!DOCTYPE html>
 <html lang="fr">
@@ -119,7 +129,12 @@ function createTitleSection(title: string, subtitle: string): string {
 }
 
 export function getContactAdminEmailTemplate(params: ContactAdminEmailParams): string {
-  const { name, email, subject, message, dateFormatted, timeFormatted } = params;
+  const name = escapeHtml(params.name);
+  const email = escapeHtml(params.email);
+  const subject = escapeHtml(params.subject);
+  const message = escapeHtml(params.message);
+  const dateFormatted = escapeHtml(params.dateFormatted);
+  const timeFormatted = escapeHtml(params.timeFormatted);
   
   const content = `
     ${createEmailHeader()}
@@ -183,7 +198,8 @@ export function getContactAdminEmailTemplate(params: ContactAdminEmailParams): s
 }
 
 export function getContactUserEmailTemplate(params: ContactUserEmailParams): string {
-  const { name, subject } = params;
+  const name = escapeHtml(params.name);
+  const subject = escapeHtml(params.subject);
   
   const content = `
     ${createEmailHeader()}
@@ -229,7 +245,7 @@ export function getContactUserEmailTemplate(params: ContactUserEmailParams): str
 }
 
 export function getNewsletterWelcomeEmailTemplate(params: NewsletterWelcomeEmailParams): string {
-  const { name } = params;
+  const name = escapeHtml(params.name);
   
   const content = `
     ${createEmailHeader()}
