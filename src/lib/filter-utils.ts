@@ -63,7 +63,23 @@ export function createFilterSystem(
     }
   }
 
-  searchInput?.addEventListener("input", applyFilters);
+  // ⚡ Bolt: Use a debounced event listener for search input to prevent unnecessary layouts during typing.
+  // Delaying local search input filtering prevents blocking the main thread when searching large lists.
+  function debounce(func: Function, wait: number) {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    return function (...args: any[]) {
+      const later = () => {
+        timeout = null;
+        func(...args);
+      };
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  const debouncedApplyFilters = debounce(applyFilters, 150); // Using 150ms for snappy responsiveness yet not every keystroke
+
+  searchInput?.addEventListener("input", debouncedApplyFilters);
 
   filterButtons.forEach((button) => {
     button.addEventListener("click", () => {

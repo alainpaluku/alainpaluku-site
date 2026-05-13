@@ -1,0 +1,3 @@
+## 2024-05-13 - [DOM Filter Caching Pitfall]
+**Learning:** Caching DOM element states (like data attributes) at script initialization for performance optimization breaks down if the list is dynamic or if the search filter strictness conflicts with cached data (like case sensitivity). Additionally, debouncing local DOM searches creates artificial input lag, which is an anti-pattern for UX since local state changes should feel instantaneous.
+**Action:** When optimizing frontend filtering logic, ensure local search input is instantaneous (no debounce) and iterate over live DOM structures or a single, properly synchronized state store, instead of statically caching DOM representations at initialization.
