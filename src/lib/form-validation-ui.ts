@@ -30,6 +30,7 @@ export function validateField(
   input: HTMLInputElement | HTMLTextAreaElement,
   errorEl: HTMLElement | null,
   minLength: number,
+  maxLength: number,
   fieldName: string,
   translations?: any
 ): boolean {
@@ -43,6 +44,16 @@ export function validateField(
 
   if (value.length < minLength) {
     const msg = translations?.minLength ? translations.minLength(fieldName, minLength) : `${fieldName} doit contenir au moins ${minLength} caractères`;
+    showError(
+      input,
+      errorEl,
+      msg
+    );
+    return false;
+  }
+
+  if (value.length > maxLength) {
+    const msg = translations?.maxLength ? translations.maxLength(fieldName, maxLength) : `${fieldName} ne peut pas dépasser ${maxLength} caractères`;
     showError(
       input,
       errorEl,

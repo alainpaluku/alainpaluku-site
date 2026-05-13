@@ -36,6 +36,7 @@ const NAV_LINKS = getNavLinks(locale);
               name="name"
               required
               minlength="2"
+              maxlength="100"
               placeholder={t.footer.firstName}
               class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
             />
@@ -51,6 +52,7 @@ const NAV_LINKS = getNavLinks(locale);
               id="newsletter-email"
               name="email"
               required
+              maxlength="100"
               placeholder={t.footer.email}
               class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
             />
@@ -189,7 +191,7 @@ const NAV_LINKS = getNavLinks(locale);
 
     // Validation en temps réel
     nameInput?.addEventListener("blur", () =>
-      validateField(nameInput, nameError, 2, t.firstName, v),
+      validateField(nameInput, nameError, 2, 100, t.firstName, v),
     );
     emailInput?.addEventListener("blur", () =>
       validateEmailField(emailInput, emailError, v),
@@ -200,7 +202,7 @@ const NAV_LINKS = getNavLinks(locale);
 
       if (!submitBtn || !status) return;
 
-      const isNameValid = validateField(nameInput, nameError, 2, t.firstName, v);
+      const isNameValid = validateField(nameInput, nameError, 2, 100, t.firstName, v);
       const isEmailValid = validateEmailField(emailInput, emailError, v);
 
       if (!isNameValid || !isEmailValid) {
