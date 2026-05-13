@@ -36,6 +36,7 @@ const NAV_LINKS = getNavLinks(locale);
               name="name"
               required
               minlength="2"
+              aria-label={t.footer.firstName}
               placeholder={t.footer.firstName}
               class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
             />
@@ -51,6 +52,7 @@ const NAV_LINKS = getNavLinks(locale);
               id="newsletter-email"
               name="email"
               required
+              aria-label={t.footer.email}
               placeholder={t.footer.email}
               class="w-full px-4 py-3 text-sm rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all"
             />
