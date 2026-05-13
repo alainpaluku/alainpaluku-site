@@ -24,6 +24,12 @@ export function createSuccessResponse(): Response {
  * Parse le body JSON d'une requête avec gestion d'erreur
  */
 export async function parseRequestBody(request: Request): Promise<{ data?: unknown; error?: Response }> {
+  // Protection basique contre le CSRF en forçant le content-type
+  const contentType = request.headers.get("content-type");
+  if (!contentType || !contentType.includes("application/json")) {
+    return { error: createErrorResponse("Type de contenu non supporté", 415) };
+  }
+
   try {
     const data = await request.json();
     return { data };
