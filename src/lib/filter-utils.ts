@@ -34,6 +34,7 @@ export function createFilterSystem(
   });
 
   function setButtonActive(button: Element, active: boolean) {
+    button.setAttribute("aria-pressed", active ? "true" : "false");
     if (active) {
       button.classList.remove(...INACTIVE_CLASSES);
       button.classList.add(...ACTIVE_CLASSES);

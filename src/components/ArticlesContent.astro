@@ -51,6 +51,7 @@ const totalArticles = posts.length;
             {categories.map((category) => (
               <button
                 data-category={category}
+                aria-pressed="false"
                 class="category-filter px-4 py-2 text-sm font-medium rounded-lg border border-border bg-muted/20 text-muted-foreground hover:border-accent hover:bg-accent/10 hover:text-accent transition-all"
               >
                 {category}
