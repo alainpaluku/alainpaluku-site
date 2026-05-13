@@ -20,6 +20,19 @@ export function createFilterSystem(
   const ACTIVE_CLASSES = ["border-accent", "bg-accent/10", "text-accent"];
   const INACTIVE_CLASSES = ["border-border", "bg-muted/20", "text-muted-foreground"];
 
+  // ⚡ Bolt Performance Optimization: Cache DOM queries and data attributes
+  // Avoids querying the DOM and calling getAttribute on every keystroke
+  const items = Array.from(document.querySelectorAll(itemSelector)).map(el => {
+    const htmlEl = el as HTMLElement;
+    return {
+      el: htmlEl,
+      title: htmlEl.getAttribute("data-title") || "",
+      description: htmlEl.getAttribute("data-description") || "",
+      tags: htmlEl.getAttribute("data-tags") || "",
+      category: htmlEl.getAttribute("data-category") || ""
+    };
+  });
+
   function setButtonActive(button: Element, active: boolean) {
     if (active) {
       button.classList.remove(...INACTIVE_CLASSES);
@@ -32,26 +45,20 @@ export function createFilterSystem(
 
   function applyFilters() {
     const searchTerm = searchInput?.value.toLowerCase() || "";
-    const items = document.querySelectorAll(itemSelector);
     let visibleCount = 0;
 
     items.forEach((item) => {
-      const title = item.getAttribute("data-title") || "";
-      const description = item.getAttribute("data-description") || "";
-      const tags = item.getAttribute("data-tags") || "";
-      const category = item.getAttribute("data-category") || "";
-
       const matchesSearch =
-        title.includes(searchTerm) ||
-        description.includes(searchTerm) ||
-        tags.includes(searchTerm) ||
-        category.includes(searchTerm);
+        item.title.includes(searchTerm) ||
+        item.description.includes(searchTerm) ||
+        item.tags.includes(searchTerm) ||
+        item.category.includes(searchTerm);
 
       const matchesFilter =
         !activeFilter ||
-        (filterAttribute === "data-tags" ? tags.includes(activeFilter) : category === activeFilter);
+        (filterAttribute === "data-tags" ? item.tags.includes(activeFilter) : item.category === activeFilter);
 
-      (item as HTMLElement).style.display = matchesSearch && matchesFilter ? "block" : "none";
+      item.el.style.display = matchesSearch && matchesFilter ? "block" : "none";
       if (matchesSearch && matchesFilter) visibleCount++;
     });
 
