@@ -49,18 +49,30 @@ export function createFilterSystem(
     let visibleCount = 0;
 
     items.forEach((item) => {
-      const matchesSearch =
-        item.title.includes(searchTerm) ||
-        item.description.includes(searchTerm) ||
-        item.tags.includes(searchTerm) ||
-        item.category.includes(searchTerm);
-
+      // ⚡ Bolt: Evaluate exact match filter first
       const matchesFilter =
         !activeFilter ||
         (filterAttribute === "data-tags" ? item.tags.includes(activeFilter) : item.category === activeFilter);
 
-      item.el.style.display = matchesSearch && matchesFilter ? "block" : "none";
-      if (matchesSearch && matchesFilter) visibleCount++;
+      // ⚡ Bolt: Short-circuit expensive search evaluations if filter fails
+      let matchesSearch = true;
+      if (matchesFilter && searchTerm) {
+        matchesSearch =
+          item.title.includes(searchTerm) ||
+          item.description.includes(searchTerm) ||
+          item.tags.includes(searchTerm) ||
+          item.category.includes(searchTerm);
+      }
+
+      const isVisible = matchesFilter && matchesSearch;
+      const displayValue = isVisible ? "block" : "none";
+
+      // ⚡ Bolt: Prevent DOM write thrashing
+      if (item.el.style.display !== displayValue) {
+        item.el.style.display = displayValue;
+      }
+
+      if (isVisible) visibleCount++;
     });
 
     if (visibleCountEl) visibleCountEl.textContent = visibleCount.toString();
