@@ -49,18 +49,28 @@ export function createFilterSystem(
     let visibleCount = 0;
 
     items.forEach((item) => {
-      const matchesSearch =
-        item.title.includes(searchTerm) ||
-        item.description.includes(searchTerm) ||
-        item.tags.includes(searchTerm) ||
-        item.category.includes(searchTerm);
-
       const matchesFilter =
         !activeFilter ||
         (filterAttribute === "data-tags" ? item.tags.includes(activeFilter) : item.category === activeFilter);
 
-      item.el.style.display = matchesSearch && matchesFilter ? "block" : "none";
-      if (matchesSearch && matchesFilter) visibleCount++;
+      // Short-circuit string search if filter doesn't match
+      const matchesSearch = matchesFilter && (
+        !searchTerm ||
+        item.title.includes(searchTerm) ||
+        item.description.includes(searchTerm) ||
+        item.tags.includes(searchTerm) ||
+        item.category.includes(searchTerm)
+      );
+
+      const isVisible = matchesSearch && matchesFilter;
+      const displayValue = isVisible ? "block" : "none";
+
+      // Prevent DOM thrashing by only writing if value changed
+      if (item.el.style.display !== displayValue) {
+        item.el.style.display = displayValue;
+      }
+
+      if (isVisible) visibleCount++;
     });
 
     if (visibleCountEl) visibleCountEl.textContent = visibleCount.toString();
