@@ -1,0 +1,4 @@
+## 2024-05-14 - Add missing maximum length limits for API payload inputs
+**Vulnerability:** API endpoints (contact and newsletter forms) only verified the minimum string length for inputs, leaving them vulnerable to Denial of Service (DoS) attacks via excessively large string payloads (e.g., multi-megabyte `message` strings that could consume memory or crash server processes).
+**Learning:** Checking for truthiness and minimum length is insufficient for APIs processing unbounded user input. The application must explicitly bound the maximum length of every string field to ensure stability against malicious payloads.
+**Prevention:** In API validation logic (such as in `src/lib/validation.ts`), always enforce strict upper bounds (e.g., `maxLength`) on user-provided inputs to prevent unbounded memory allocation or processing loops.
