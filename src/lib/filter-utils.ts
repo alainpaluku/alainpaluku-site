@@ -29,7 +29,8 @@ export function createFilterSystem(
       title: htmlEl.getAttribute("data-title") || "",
       description: htmlEl.getAttribute("data-description") || "",
       tags: htmlEl.getAttribute("data-tags") || "",
-      category: htmlEl.getAttribute("data-category") || ""
+      category: htmlEl.getAttribute("data-category") || "",
+      isVisible: true // ⚡ Bolt: Cache visibility state to prevent redundant DOM writes
     };
   });
 
@@ -49,18 +50,29 @@ export function createFilterSystem(
     let visibleCount = 0;
 
     items.forEach((item) => {
-      const matchesSearch =
-        item.title.includes(searchTerm) ||
-        item.description.includes(searchTerm) ||
-        item.tags.includes(searchTerm) ||
-        item.category.includes(searchTerm);
-
       const matchesFilter =
         !activeFilter ||
         (filterAttribute === "data-tags" ? item.tags.includes(activeFilter) : item.category === activeFilter);
 
-      item.el.style.display = matchesSearch && matchesFilter ? "block" : "none";
-      if (matchesSearch && matchesFilter) visibleCount++;
+      // ⚡ Bolt: Short-circuit search if filter already hides item
+      let matchesSearch = true;
+      if (matchesFilter && searchTerm) {
+        matchesSearch =
+          item.title.includes(searchTerm) ||
+          item.description.includes(searchTerm) ||
+          item.tags.includes(searchTerm) ||
+          item.category.includes(searchTerm);
+      }
+
+      const isVisibleTarget = matchesSearch && matchesFilter;
+
+      // ⚡ Bolt: Only write to DOM if visibility state changed
+      if (item.isVisible !== isVisibleTarget) {
+        item.el.style.display = isVisibleTarget ? "block" : "none";
+        item.isVisible = isVisibleTarget;
+      }
+
+      if (isVisibleTarget) visibleCount++;
     });
 
     if (visibleCountEl) visibleCountEl.textContent = visibleCount.toString();
