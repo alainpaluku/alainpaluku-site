@@ -30,6 +30,7 @@ const NAV_LINKS = getNavLinks(locale);
         </p>
         <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
           <div class="flex-1">
+            <label for="newsletter-name" class="sr-only">{t.footer.firstName}</label>
             <input
               type="text"
               id="newsletter-name"
@@ -46,6 +47,7 @@ const NAV_LINKS = getNavLinks(locale);
             </p>
           </div>
           <div class="flex-1">
+            <label for="newsletter-email" class="sr-only">{t.footer.email}</label>
             <input
               type="email"
               id="newsletter-email"
